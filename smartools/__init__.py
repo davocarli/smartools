@@ -1,1 +1,1 @@
-from smartools.smartools import Smartsheet
+import smartools.smartools
