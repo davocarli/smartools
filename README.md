@@ -51,7 +51,7 @@ import smartools as smartsheet  # Will import the entire smartsheet sdk for use.
 smart = smartsheet.Smartsheet(<<YOUR API TOKEN>>)
 rows_to_be_added = []
 
-for i in range(1000):
+for i in range(2000):
     newrow = smartsheet.models.Row()
     newrow.to_bottom = True
     newrow.cells.append({
