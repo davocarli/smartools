@@ -1,1 +1,1 @@
-import smartools.smartools
+from smartools import smartools
