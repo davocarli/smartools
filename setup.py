@@ -2,7 +2,7 @@ from distutils.core import setup
 setup(
   name = 'smartools',
   packages = ['smartools'],
-  version = '0.1',
+  version = '0.2',
   license='MIT',
   description = 'A class extending the official smartsheet-python-sdk that adds a new Util subclass with useful helper methods.',
   author = 'David Carli-Arnold',
