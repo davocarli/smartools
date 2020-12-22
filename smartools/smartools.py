@@ -62,7 +62,7 @@ class Smartsheet(smartsheet.Smartsheet):
 				or contains in report.name:
 					containers['reports'].append(report.name)
 			for folder in parent.folders:
-				child = list_containers_in_workspace(parentid=None, contains=contains, exact=exact, parent=folder)
+				child = self.list_containers_in_workspace(parentid=None, contains=contains, exact=exact, parent=folder)
 				containers['sheets'].extend(child['sheets'])
 				containers['sights'].extend(child['sights'])
 				containers['reports'].extend(child['reports'])
@@ -105,7 +105,7 @@ class Smartsheet(smartsheet.Smartsheet):
 				or contains in report.name:
 					containers['reports'].append(report)
 			for folder in parent.folders:
-				child = list_containers_in_folder(parentid=folder.id, contains=contains, exact=exact)
+				child = self.list_containers_in_folder(parentid=folder.id, contains=contains, exact=exact)
 				containers['sheets'].extend(child['sheets'])
 				containers['sights'].extend(child['sights'])
 				containers['reports'].extend(child['reports'])
