@@ -106,9 +106,9 @@ class Smartsheet(smartsheet.Smartsheet):
 					containers['reports'].append(report)
 			for folder in parent.folders:
 				child = self.list_containers_in_folder(parentid=folder.id, contains=contains, exact=exact)
-				containers['sheets'].extend(child['sheets'])
-				containers['sights'].extend(child['sights'])
-				containers['reports'].extend(child['reports'])
+				containers['sheets'].extend(child.sheets)
+				containers['sights'].extend(child.sights)
+				containers['reports'].extend(child.reports)
 			return DictToObject(containers)
 
 
