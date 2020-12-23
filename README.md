@@ -1,6 +1,6 @@
 # Smartools
 
-smartools is a class that extends the official [smartsheet-python-sdk]. It adds a new subclass, "Util" that contains several methods that perform more complex but common operations. The decision was made to subclass the smartsheet sdk, rather than fork it, because:
+smartools is a class that extends the official [smartsheet-python-sdk]. It adds a new "SmartsheetUtilities" subclass (accessible at smartsheet_client.Util) that contains several methods that perform more complex but common operations. The decision was made to subclass the smartsheet sdk, rather than fork it, because:
 - The official sdk does what it is designed to do very well - it allows you to perform calls to the Smartsheet API. Many of my additions instead perform some amount of processing of the data, or multiple API calls.
 - By subclassing the existing package, this package can be updated independently of the original sdk, and is not dependent on a specific version.
 
