@@ -66,7 +66,7 @@ class Smartsheet(smartsheet.Smartsheet):
 				containers['sheets'].extend(child.sheets)
 				containers['sights'].extend(child.sights)
 				containers['reports'].extend(child.reports)
-			return DictToObject(containers)
+			return SmartoolsObject(containers)
 
 
 		def list_sheets_in_folder(self, parentid, contains=None, exact=False):
@@ -109,7 +109,7 @@ class Smartsheet(smartsheet.Smartsheet):
 				containers['sheets'].extend(child.sheets)
 				containers['sights'].extend(child.sights)
 				containers['reports'].extend(child.reports)
-			return DictToObject(containers)
+			return SmartoolsObject(containers)
 
 
 		def bulk_add_rows(self, sheetid, rows, n=500, retries=5):
@@ -125,6 +125,9 @@ class Smartsheet(smartsheet.Smartsheet):
 			if n > 500:
 				n = 500
 
+			if not isinstance(rows, list):
+				rows = [rows]
+
 			while len(rows) > 0:
 				response = self.smart.Sheets.add_rows(sheetid, rows[:n])
 				if hasattr(response.result, 'error_code'):
@@ -138,7 +141,7 @@ class Smartsheet(smartsheet.Smartsheet):
 							result['responses'].append(response)
 							result['status'] = 'ERROR'
 							result['error_message'] = 'See last response for detailed error.'
-							return DictToObject(result)
+							return SmartoolsObject(result)
 				else:
 					result['data'].extend(response.data)
 					rows = rows[n:]
@@ -146,7 +149,7 @@ class Smartsheet(smartsheet.Smartsheet):
 					result['responses'].append(response)
 					result['rows'].extend(response.result)
 			result['status'] = 'SUCCESS'
-			return DictToObject(result)
+			return SmartoolsObject(result)
 
 
 		def bulk_update_rows(self, sheetid, rows, n=500, retries=5):
@@ -162,6 +165,9 @@ class Smartsheet(smartsheet.Smartsheet):
 			if n > 500:
 				n = 500
 
+			if not isinstance(rows, list):
+				rows = [rows]
+
 			while len(rows) > 0:
 				response = self.smart.Sheets.update_rows(sheetid, rows[:n])
 				if hasattr(response.result, 'error_code'):
@@ -175,7 +181,7 @@ class Smartsheet(smartsheet.Smartsheet):
 							result['responses'].append(response)
 							result['status'] = 'ERROR'
 							result['error_message'] = 'See last response for detailed error.'
-							return DictToObject(result)
+							return SmartoolsObject(result)
 				else:
 					result['data'].extend(response.data)
 					rows = rows[n:]
@@ -183,7 +189,7 @@ class Smartsheet(smartsheet.Smartsheet):
 					result['responses'].append(response)
 					result['rows'].extend(response.result)
 				result['status'] = 'SUCCESS'
-				return DictToObject(result)
+				return SmartoolsObject(result)
 
 
 		def get_sheet_as_pandas_dataframe(self, sheetid, label_column=None):
@@ -223,21 +229,21 @@ class Smartsheet(smartsheet.Smartsheet):
 			try:
 				sheetid = int(sheetid)
 			except:
-				return DictToObject({'status': 'ERROR', 'access_met': False, 'Reason': 'Sheet ID is invalid'})
+				return SmartoolsObject({'status': 'ERROR', 'access_met': False, 'Reason': 'Sheet ID is invalid'})
 
 			sheet = self.smart.Sheets.get_sheet(sheetid, column_ids=[0], row_numbers=[0], level=1)
 
 			if hasattr(sheet, 'result') and hasattr(sheet.result, 'error_code'):
-				return DictToObject({'status': 'ERROR', 'access_met': False, 'sheet': sheet})
+				return SmartoolsObject({'status': 'ERROR', 'access_met': False, 'sheet': sheet})
 
 			if isinstance(permission_level, str):
 				permission_level = access_levels[permission_level]
 
 			if permission_level is None:
-				return DictToObject({'status': 'ERROR', 'access_met': False, 'access_level': sheet.access_level})
+				return SmartoolsObject({'status': 'ERROR', 'access_met': False, 'access_level': sheet.access_level})
 			else:
 				permission_met = permission_level <= access_levels[str(sheet.access_level)]
-				return DictToObject({'status': 'SUCCESS', 'access_met': permission_met, 'access_level': sheet.access_level, 'sheet_response': sheet})
+				return SmartoolsObject({'status': 'SUCCESS', 'access_met': permission_met, 'access_level': sheet.access_level, 'sheet_response': sheet})
 
 
 		def check_workspace_permissions(self, spaceid, permission_level=None):
@@ -245,12 +251,12 @@ class Smartsheet(smartsheet.Smartsheet):
 			try:
 				spaceid = int(spaceid)
 			except:
-				return DictToObject({'status': 'ERROR', 'access_met': False, 'Reason': 'Workspace ID is invalid'})
+				return SmartoolsObject({'status': 'ERROR', 'access_met': False, 'Reason': 'Workspace ID is invalid'})
 
 			space = self.smart.Workspaces.get_workspace(spaceid)
 
 			if hasattr(space, 'result') and hasattr(space.result, 'error_code'):
-				return DictToObject({'status': 'ERROR', 'access_met': False, 'Reason': 'This workspace could not be found', 'workspace_response': space})
+				return SmartoolsObject({'status': 'ERROR', 'access_met': False, 'Reason': 'This workspace could not be found', 'workspace_response': space})
 
 			if isinstance(permission_level, str):
 				permission_level = access_levels[permission_level]
@@ -259,7 +265,7 @@ class Smartsheet(smartsheet.Smartsheet):
 				return space.access_level
 			else:
 				permission_met = permission_level <= access_levels[str(space.access_level)]
-				return DictToObject({'status': 'SUCCESS', 'access_met': permission_met, 'access_level': space.access_level, 'workspace_response': space})
+				return SmartoolsObject({'status': 'SUCCESS', 'access_met': permission_met, 'access_level': space.access_level, 'workspace_response': space})
 
 
 		def check_folder_access(self, folderid):
@@ -268,7 +274,7 @@ class Smartsheet(smartsheet.Smartsheet):
 				return False
 			return True
 
-class DictToObject(object):
+class SmartoolsObject(object):
 	def __init__(self, *initial_data, **kwargs):
 		for dictionary in initial_data:
 			for key in dictionary:
