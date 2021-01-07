@@ -338,7 +338,10 @@ class Smartsheet(smartsheet.Smartsheet):
 			items = []
 
 			if search_list != None:
-				items = search_list
+				if hasattr(search_list, 'data'):
+					items = search_list.data
+				else:
+					items = search_list
 			elif '/sheets/' in container_url:
 				response = self.smart.Sheets.list_sheets(include_all=True)
 				items = response.data
