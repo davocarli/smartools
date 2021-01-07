@@ -325,6 +325,37 @@ class Smartsheet(smartsheet.Smartsheet):
 				return False
 			return True
 
+
+		# Takes the url to a Smartsheet item then returns its ID. Please note this is a very slow operation as it iterates through all items in the account
+		def get_container_from_url(self,
+				container_url,  # The url to be matched to an existing Smartsheet item
+				search_list=None  # (Optional) A list of items to search through. If provided, will speed up execution as the list will not need to be retrieved.
+			):
+			q = container_url.find('?')
+			if q != -1:
+				container_url = container_url[:q]
+
+			items = []
+
+			if search_list != None:
+				items = search_list
+			elif '/sheets/' in container_url:
+				response = self.smart.Sheets.list_sheets(include_all=True)
+				items = response.data
+			elif '/reports/' in container_url:
+				response = self.smart.Reports.list_reports(include_all=True)
+				items = response.data
+			elif '/dashboards/' in container_url:
+				response = self.smart.Sights.list_sights(include_all=True)
+				items = response.data
+
+			for item in items:
+				if item.permalink.endswith(container_url):
+					return item
+			
+			return None
+
+
 class SmartoolsObject(object):
 	def __init__(self, *initial_data, **kwargs):
 		for dictionary in initial_data:
