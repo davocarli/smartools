@@ -5,9 +5,9 @@ import time
 
 class Smartsheet(smartsheet.Smartsheet):
 
-	def __init__(self, token=None):
+	def __init__(self, *args, **kwargs):
 		self.Util = self.SmartsheetUtilities(self)
-		super().__init__(token)
+		super().__init__(*args, **kwargs)
 
 
 	class SmartsheetUtilities():
