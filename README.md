@@ -45,7 +45,7 @@ All of these methods can be accessed through the "Util" class. For example, `sma
 - `get_container_from_url(container_url, search_list)`
     - A method that will return a container (sheets, dashboards & reports supported) provided a url:
         - `container_url`: The url of the container to be retrieved.
-        - `search_list` (Optional): A list of containers to search through. Will VERY GREATLY speed up the retrieval of the container if provided, as an API call to retrieve all the containers will not need to be made.
+        - `search_list` (Optional): A list of containers to search through, or an IndexResult retrieved with a list_x method call. Will VERY GREATLY speed up the retrieval of the container if provided, as an API call to retrieve all the containers will not need to be made.
     - Note: This method is very slow, as it will retrieve a list of all the containers of the url's type (report, sheet, etc.) and iterate through them to locate the correct one. If using this method to retrieve multiple containers of the same type, it's recommended that you retrieve the container list separately and pass it as the search_list parameter. This can be done by using `search_list = smartsheet_client.Container.list_container(include_all=True)`, where "Container" is "Sheets", "Reports", or "Sights" respectively.
 
 ## Example Usage
