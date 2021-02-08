@@ -1,10 +1,27 @@
 # Smartools
 
-smartools is a class that extends the official [smartsheet-python-sdk]. It adds a new "SmartsheetUtilities" subclass (accessible at smartsheet_client.Util) that contains several methods that perform more complex but common operations. The decision was made to subclass the smartsheet sdk, rather than fork it, because:
+smartools is a wrapper that extends the official [smartsheet-python-sdk]. It monkey patches several classes to add new functionality, and adds a new "SmartsheetUtilities" subclass (accessible at smartsheet_client.Util) that contains several methods that perform more complex but common operations. The decision was made to monkey patch the smartsheet sdk, rather than fork it, because:
 - The official sdk does what it is designed to do very well - it allows you to perform calls to the Smartsheet API. Many of my additions instead perform some amount of processing of the data, or multiple API calls, so they are outside the scope of the SDK.
 - By subclassing the existing package, this package can be updated independently of the original sdk, and is not dependent on a specific version.
 
-### Added methods
+### Monkey-patched classes
+#### smartsheet.types.TypedList
+This method was monkey-patched to allow for getting of items using a string, provided that an index_reference attribute has been set on the TypedList. This is used in the other classes below.
+
+#### smartsheet_client.Sheets
+- `get_sheet()`
+    - The get_sheet method has been modified to incorporate the monkey-patched TypedList. Columns and cells can now be obtained using column names. For example:
+        ```
+        sheet = smartsheet_client.Sheets.get_sheet(sheetid)
+        
+        start_column = sheet.columns['Start Date']  # Get column named "Start Date"
+        new_name = sheet.rows[0].cells['Start Date']  # Get value of first row for column named "Start Date"
+        ```
+    - **Performance:** A stress test loading a maximum-size sheet (20,000 rows x 25 columns = 500,000 cells) 100 times with and without the new method revealed that on average a get_sheet operation only takes on average ~0.12 seconds longer with these changes. However, if you want to preserve maximum performance you can pass list_dict=False to the method to skip these operations. For example 
+    
+    `smartsheet_client.Sheets.get_sheet(sheetid, include='ColumnType', list_dict=False)`
+
+### Util class methods
 All of these methods can be accessed through the "Util" class. For example, `smartsheet_client.Util.list_sheets_in_workspace(6058237884688260, "Metrics")`
 - `list_sheets_in_workspace(parentid, contains=None, exact=False)`
     - Lists all the sheets inside of the workspace. Arguments are:
