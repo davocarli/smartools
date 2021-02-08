@@ -14,10 +14,10 @@ class SmartoolsSheets(smartsheet.sheets.Sheets):
 			for column in sheet.columns:
 				coldict[column.title] = column.index
 
-			sheet.columns.column_indexes = coldict
+			sheet.columns.index_reference = coldict
 
 			for row in sheet.rows:
-				row.cells.column_indexes = coldict
+				row.cells.index_reference = coldict
 		else:
 			sheet = super().get_sheet(*args, **kwargs)
 
