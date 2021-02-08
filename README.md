@@ -17,7 +17,7 @@ This method was monkey-patched to allow for getting of items using a string, pro
         start_column = sheet.columns['Start Date']  # Get column named "Start Date"
         new_name = sheet.rows[0].cells['Start Date']  # Get value of first row for column named "Start Date"
         ```
-    - **Performance:** A stress test loading a maximum-size sheet (20,000 rows x 25 columns = 500,000 cells) 100 times with and without the new method revealed that on average a get_sheet operation only takes on average ~0.12 seconds longer with these changes. However, if you want to preserve maximum performance you can pass list_dict=False to the method to skip these operations. For example 
+    - **Performance:** A stress test loading a maximum-size sheet (20,000 rows x 25 columns = 500,000 cells) 100 times with and without the new method revealed that on average a get_sheet operation only takes on average ~0.12 seconds longer with these changes, and network performance likely has a greater effect on total time. However, if you want to preserve maximum performance you can pass list_dict=False to the method to skip these operations. For example 
     
     `smartsheet_client.Sheets.get_sheet(sheetid, include='ColumnType', list_dict=False)`
 
