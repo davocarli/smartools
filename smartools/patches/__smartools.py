@@ -6,6 +6,9 @@ class SmartoolsObject(object):
 		for key in kwargs:
 			setattr(self, key, kwargs[key])
 
+	def __str__(self):
+		return str(self.__dict__)
+
 class RequirementError(Exception):
 	pass
 
