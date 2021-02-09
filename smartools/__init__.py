@@ -1,5 +1,6 @@
 # Multiple imports are performed to ensure that classes are overwritten in the correct order.u
 from importlib import reload
+import smartsheet
 from .patches import *
 
 smartsheet = reload(smartsheet)
