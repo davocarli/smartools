@@ -159,3 +159,4 @@ class SmartoolsSheets(smartsheet.sheets.Sheets):
 # Perform Monkey Patch
 smartsheet.sheets.Sheets = SmartoolsSheets
 smartsheet.models.sheet.TypedList = SmartoolsTypedList
+smartsheet.models.row.TypedList = SmartoolsTypedList
