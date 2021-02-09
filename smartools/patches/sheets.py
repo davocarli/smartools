@@ -27,11 +27,11 @@ class SmartoolsSheets(smartsheet.sheets.Sheets):
 
 		rowdict = {}
 
-		for row in sheet.rows:
-			row.cells.index_reference = coldict
-			primary_value = str(row.cells[primary_index].value or '')
+		for i in range(len(sheet.rows)):
+			sheet.rows[i].cells.index_reference = coldict
+			primary_value = str(sheet.rows[i].cells[primary_index].value or '')
 			if primary_value not in rowdict:
-				rowdict[primary_value] = row.index
+				rowdict[primary_value] = i
 
 		sheet.rows.index_reference = rowdict
 
