@@ -1,5 +1,6 @@
 import smartsheet
 from .__smartools import SmartoolsObject, access_levels
+from .typed_list import SmartoolsTypedList
 
 smart = smartsheet.Smartsheet("INIT")
 smart.Sheets
@@ -157,3 +158,4 @@ class SmartoolsSheets(smartsheet.sheets.Sheets):
 
 # Perform Monkey Patch
 smartsheet.sheets.Sheets = SmartoolsSheets
+smartsheet.models.sheet.TypedList = SmartoolsTypedList
