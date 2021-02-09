@@ -64,7 +64,7 @@ class SmartoolsSheets(smartsheet.sheets.Sheets):
 		while len(rows) > 0:
 			response = self.add_rows(sheet_id, rows[:n], **kwargs)
 			if hasattr(response.result, 'error_code'):
-				current_retries -= 1:
+				current_retries -= 1
 				if response.result.error_code == 4002:
 					n = n//2
 				elif response.result.error_code in [4003, 4004]:
