@@ -4,6 +4,13 @@ smartools is a wrapper that extends the official [smartsheet-python-sdk]. It mon
 - The official sdk does what it is designed to do very well - it allows you to perform calls to the Smartsheet API. Many of my additions instead perform some amount of processing of the data, or multiple API calls, so they are outside the scope of the SDK.
 - By subclassing the existing package, this package can be updated independently of the original sdk, and is not dependent on a specific version.
 
+## Installation
+This package has not (yet) been added to PyPI, but can be installed using:
+```
+pip install -e git+https://github.com/davocarli/smartools.git#egg=smartools
+```
+Once installed it can be imported with `import smartools` or for a more authentic replacement to the official sdk `import smartools as smartsheet`
+
 ### Monkey-patched classes
 #### smartsheet.types.TypedList
 This method was monkey-patched to allow for getting of items using a string, provided that an index_reference attribute has been set on the TypedList. This is used in the other classes below.
