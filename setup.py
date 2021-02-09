@@ -1,7 +1,7 @@
 from distutils.core import setup
 setup(
   name = 'smartools',
-  packages = ['smartools'],
+  packages = ['smartools', 'smartools.patches'],
   version = '0.5',
   license='MIT',
   description = 'A class extending the official smartsheet-python-sdk that adds a new Util subclass with useful helper methods.',
