@@ -16,5 +16,5 @@ class SmartoolsTypedList(smartsheet.types.TypedList):
 
 # Perform Monkey Patch
 smartsheet.types.TypedList = SmartoolsTypedList
-smartsheet.models.sheet.TypedList = SmartoolsTypedList
-smartsheet.models.row.TypedList = SmartoolsTypedList
+# smartsheet.models.sheet.TypedList = SmartoolsTypedList
+# smartsheet.models.row.TypedList = SmartoolsTypedList
