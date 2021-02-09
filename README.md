@@ -7,7 +7,7 @@ smartools is a wrapper that extends the official [smartsheet-python-sdk]. It mon
 ## Installation
 This package has not (yet) been added to PyPI, but can be installed using:
 ```
-pip install -e git+https://github.com/davocarli/smartools.git#egg=smartools
+pip install git+https://github.com/davocarli/smartools.git
 ```
 Once installed it can be imported with `import smartools` or for a more authentic replacement to the official sdk `import smartools as smartsheet`
 
