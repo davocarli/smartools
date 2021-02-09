@@ -1,5 +1,5 @@
 import smartsheet
-from .__smartools import SmartoolsObject
+from .__smartools import SmartoolsObject, access_levels
 
 smart = smartsheet.Smartsheet("INIT")
 smart.Sheets
@@ -136,7 +136,6 @@ class SmartoolsSheets(smartsheet.sheets.Sheets):
 			sheet_id,  # The ID of the sheet to check for permission requirements
 			permission_level=None  # The minimum permission level required. Can be a number from 1-5, or a String. If None, method will just return the sheet permission level
 		):
-		access_levels = .__smartools.access_levels
 		try:
 			sheet_id = int(sheet_id)
 		except:
