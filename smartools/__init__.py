@@ -1,11 +1,8 @@
 # Multiple imports are performed to ensure that classes are overwritten in the correct order.u
-from importlib import reload
-import smartsheet
+
 from .patches import *
 
-smartsheet = reload(smartsheet)
-
-# import smartsheet
+import smartsheet
 from smartsheet import *  # Import all the modules from smartsheet.
 
 for var in dir(smartsheet):  # Define all variables locally that are defined during
