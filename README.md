@@ -17,28 +17,28 @@ In general, usage of smartools is identical to the standard SDK. All original fu
 
 ### [Sheets](./docs/sheets.md)
 - Altered methods
-    - [Get Sheet](./docs/sheets.md#get-sheet---smartsheet_client.sheets.get_sheet)
+    - [Get Sheet](./docs/sheets.md#get-sheet---smartsheet_clientsheetsget_sheet)
 - New methods
-    - [Bulk Add Rows](./docs/sheets.md#bulk-add-rows--smartsheet_client.sheets.bulk_add_rows)
-    - [Bulk Update Rows](./docs/sheets.md#bulk-update-rows--smartsheet_client.sheets.bulk_update_rows)
-    - [Check Sheet Permissions](./docs/sheets.md#check-sheet-permissions--smartsheet_client.sheets.check_sheet_permissions)
-    - [Get Pandas DataFrame](./docs/sheets.md#get-pandas-dataframe--smartsheet_client.sheets.get_sheet_as_pandas_dataframe)
+    - [Bulk Add Rows](./docs/sheets.md#bulk-add-rows--smartsheet_clientsheetsbulk_add_rows)
+    - [Bulk Update Rows](./docs/sheets.md#bulk-update-rows--smartsheet_clientsheetsbulk_update_rows)
+    - [Check Sheet Permissions](./docs/sheets.md#check-sheet-permissions--smartsheet_clientsheetscheck_sheet_permissions)
+    - [Get Pandas DataFrame](./docs/sheets.md#get-pandas-dataframe--smartsheet_clientsheetsget_sheet_as_pandas_dataframe)
 
 ### [Workspaces](./docs/workspaces.md)
 - New methods
-    - [List Sheets](./docs/workspaces.md#list-sheets---smartsheet_client.workspaces.list_sheets_in_workspace)
-    - [List Containers](./docs/workspaces.md#list-containers--smartsheet_client.workspaces.list_containers_in_workspace)
-    - [Check Workspace Permissions](./docs/workspaces.md#check-workspace-permissions--smartsheet_client.workspaces.check_workspace_permissions)
+    - [List Sheets](./docs/workspaces.md#list-sheets---smartsheet_clientworkspaceslist_sheets_in_workspace)
+    - [List Containers](./docs/workspaces.md#list-containers--smartsheet_clientworkspaceslist_containers_in_workspace)
+    - [Check Workspace Permissions](./docs/workspaces.md#check-workspace-permissions--smartsheet_clientworkspacescheck_workspace_permissions)
 
 ### [Folders](./docs/folders.md)
 - New methods
-    - [List Sheets](./docs/folders.md#list-sheets---smartsheet_client.folders.list_sheets_in_folder)
-    - [List Containers](./docs/folders.md#list-containers--smartsheet_client.folders.list_containers_in_folder)
-    - [Check Folder Access](./docs/folders.md#check-folder-access--smartsheet_client.folders.check_folder_access)
+    - [List Sheets](./docs/folders.md#list-sheets---smartsheet_clientfolderslist_sheets_in_folder)
+    - [List Containers](./docs/folders.md#list-containers--smartsheet_clientfolderslist_containers_in_folder)
+    - [Check Folder Access](./docs/folders.md#check-folder-access--smartsheet_clientfolderscheck_folder_access)
 
 ### [Home](./docs/home.md)
 - New methods
-    - [Get Container Using URL](./docs/home.md#get-container-using-url--smartsheet_client.home.get_container_from_url)
+    - [Get Container Using URL](./docs/home.md#get-container-using-url--smartsheet_clienthomeget_container_from_url)
 
 ## The "Util" class
 A prior version of smartools did not patch the SDK's classes directly, but instead added a new class at smartsheet_client.Util.*method_name*. The use of this class has been deprecated, and calling these methods will now make a deprecation warning then call the newly-patched method directly. The one current exception is the get_container_from_url method, which can still only be called from the Util class.

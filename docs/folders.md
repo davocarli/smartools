@@ -27,7 +27,7 @@ for sheet in sheets:
 ## List Containers | `smartsheet_client.Folders.list_containers_in_folder`
 This method allows you to get all the contents of a folder, separated into lists by container type. You can optionally provide a string to match to container names in order to only retrieve those containers.
 **Parameters:**
-Parameters are identical to [list_sheets_in_folder](#list-sheets---smartsheet_client.folder.folder). See there.
+Parameters are identical to [list_sheets_in_folder](#list-sheets---smartsheet_clientfolderfolder). See there.
 **Returns:**
 Returns a SmartoolsObject that contains the following attributes:
 - `sheets:` The list of sheets returned.

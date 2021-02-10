@@ -27,7 +27,7 @@ for sheet in sheets:
 ## List Containers | `smartsheet_client.Workspaces.list_containers_in_workspace`
 This method allows you to get all the contents of a workspace, separated into lists by container type. You can optionally provide a string to match to container names in order to only retrieve those containers.
 **Parameters:**
-Parameters are identical to [list_sheets_in_workspace](#list-sheets---smartsheet_client.workspaces.list_sheets_in_workspace). See there.
+Parameters are identical to [list_sheets_in_workspace](#list-sheets---smartsheet_clientworkspaceslist_sheets_in_workspace). See there.
 **Returns:**
 Returns a SmartoolsObject that contains the following attributes:
 - `sheets:` The list of sheets returned.

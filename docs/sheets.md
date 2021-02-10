@@ -43,7 +43,7 @@ for i in range(2000):
 smart.Sheets.bulk_add_rows(sheetid, rows)  # Bulk add rows
 ```
 ## Bulk Update Rows | `smartsheet_client.Sheets.bulk_update_rows`
-A method similar to the bulk add rows method, but updates rows instead of adding them. See [Bulk Add Rows (smartools)](#bulk-add-rows--smartsheet_client.sheets.bulk_add_rows) and [Update Rows (Smartsheet API Docs)](https://smartsheet-platform.github.io/api-docs/?python#update-rows) for more details.
+A method similar to the bulk add rows method, but updates rows instead of adding them. See [Bulk Add Rows (smartools)](#bulk-add-rows--smartsheet_clientsheetsbulk_add_rows) and [Update Rows (Smartsheet API Docs)](https://smartsheet-platform.github.io/api-docs/?python#update-rows) for more details.
 **Example Usage:**
 This example will update every row to have its row number in the "Row Number" column.
 ```
