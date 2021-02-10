@@ -327,7 +327,7 @@ class Smartsheet(smartsheet.Smartsheet):
 		# 		permission_met = permission_level <= access_levels[str(sheet.access_level)]
 		# 		return SmartoolsObject({'status': 'SUCCESS', 'access_met': permission_met, 'access_level': sheet.access_level, 'sheet_response': sheet})
 
-		def get_sheet_permissions(self, *args, **kwargs):
+		def check_sheet_permissions(self, *args, **kwargs):
 			warnings.warn('Util methods have been deprecated. Please use .Sheets.check_sheet_permissions instead.', DeprecationWarning)
 			return self.smart.Sheets.check_sheet_permissions(*args, **kwargs)
 
