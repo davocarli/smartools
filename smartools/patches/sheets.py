@@ -1,5 +1,5 @@
 import smartsheet
-from .__smartools import SmartoolsObject, access_levels
+from .__smartools import SmartoolsObject, access_levels, RequirementError
 from .typed_list import SmartoolsTypedList
 
 smart = smartsheet.Smartsheet("INIT")
@@ -35,6 +35,8 @@ class SmartoolsSheets(smartsheet.sheets.Sheets):
 				rowdict[primary_value] = i
 
 		sheet.rows.index_reference = rowdict
+
+		sheet.primary_index = primary_index
 
 		return sheet
 
@@ -155,6 +157,45 @@ class SmartoolsSheets(smartsheet.sheets.Sheets):
 		else:
 			permission_met = permission_level <= access_levels[str(sheet.access_level)]
 			return SmartoolsObject({'status': 'SUCCESS', 'access_met': permission_met, 'access_level': sheet.access_level, 'sheet_response': sheet})
+
+	# Retrieves a sheet then returns a DataFrame of the sheet's data
+	def get_sheet_as_pandas_dataframe(self,
+			sheet,  # The ID of the sheet to be returned OR the existing Sheet object to be processed
+			label_column=None,  # The column to be used for row labels of the DataFrame.
+		):
+		try:
+			import pandas as pd
+		except ImportError:
+			raise RequirementError({'message': 'Import Error: This method requires the pandas module', 'recommended_action': 'Install pandas by using "pip install pandas"'})
+		if isinstance(sheet, int):
+			sheet = self.get_sheet(sheet_id)
+		elif not isinstance(sheet, smartsheet.models.Sheet):
+			raise Exception('sheet must be either an int or a sheet object.')
+
+		pd_row_data = []
+		pd_row_labels = []
+		pd_columns = []
+
+		# Prep df columns
+		for column in sheet.columns:
+			if (label_column is None and column.primary == True):
+				label_column = column.id
+			elif column.id == label_column or column.title == label_column:
+				label_column = column.id
+			else:
+				pd_columns.append(column.title)
+
+		# Prep row data
+		for row in sheet.rows:
+			row_list = []
+			for cell in row.cells:
+				if cell.column_id == label_column:
+					pd_row_labels.append(cell.value)
+				else:
+					row_list.append(cell.value)
+			pd_row_data.append(row_list)
+
+		return pd.DataFrame(pd_row_data, columns=pd_columns, index=pd_row_labels)
 
 # Perform Monkey Patch
 smartsheet.sheets.Sheets = SmartoolsSheets

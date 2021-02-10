@@ -59,6 +59,14 @@ class SmartoolsFolders(smartsheet.folders.Folders):
 			containers['reports'].extend(child.reports)
 		return SmartoolsObject(containers)
 
+	# Takes a folder ID as an argument, and returns a boolean indicating whether it is a valid folder that the user has access to
+	def check_folder_access(self,
+			folder_id  # The ID of the folder to check for access.
+		):
+		folder = self.get_folder(folder_id)
+		if hasattr(folder, 'result') and hasattr(folder.result, 'error_code'):
+			return False
+		return True
 
 # Perform Monkey Patch
 smartsheet.folders.Folders = SmartoolsFolders
