@@ -17,7 +17,7 @@ In general, usage of smartools is identical to the standard SDK. All original fu
 
 ### [Sheets](./docs/sheets.md)
 - Altered methods
-    - [Get Sheet Enhancements](./docs/sheets.md#get-sheet---smartsheet_client.sheets.get_sheet)
+    - [Get Sheet](./docs/sheets.md#get-sheet---smartsheet_client.sheets.get_sheet)
 - New methods
     - [Bulk Add Rows](./docs/sheets.md#bulk-add-rows--smartsheet_client.sheets.bulk_add_rows)
     - [Bulk Update Rows](./docs/sheets.md#bulk-update-rows--smartsheet_client.sheets.bulk_update_rows)
