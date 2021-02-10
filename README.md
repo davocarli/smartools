@@ -1,3 +1,4 @@
+
 # Smartools
 
 smartools is a wrapper that extends the official [smartsheet-python-sdk]. It monkey patches several classes to add new functionality, and adds a new "SmartsheetUtilities" subclass (accessible at smartsheet_client.Util) that contains several methods that perform more complex but common operations. The decision was made to monkey patch the smartsheet sdk, rather than fork it, because:
@@ -38,6 +39,9 @@ In general, usage of smartools is identical to the standard SDK. All original fu
 ### [Home](./docs/home.md)
 - New methods
     - [Get Container Using URL](./docs/home.md#get-container-using-url--smartsheet_client.home.get_container_from_url)
+
+## The "Util" class
+A prior version of smartools did not patch the SDK's classes directly, but instead added a new class at smartsheet_client.Util.*method_name*. The use of this class has been deprecated, and calling these methods will now make a deprecation warning then call the newly-patched method directly. The one current exception is the get_container_from_url method, which can still only be called from the Util class.
 
 
 [smartsheet-python-sdk]: <https://github.com/smartsheet-platform/smartsheet-python-sdk>
