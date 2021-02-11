@@ -9,6 +9,7 @@ class SmartoolsSheets(smartsheet.sheets.Sheets):
 	def smartools(self):
 		return 'smartools methods are available!'
 
+	# Gets the sheet and sets index references for columns, rows, and cells
 	def get_sheet(self, *args, **kwargs):
 		sheet = super().get_sheet(*args, **kwargs)
 
@@ -39,6 +40,20 @@ class SmartoolsSheets(smartsheet.sheets.Sheets):
 		sheet.primary_index = primary_index
 
 		return sheet
+
+	# Gets columns and sets an index reference for them
+	def get_columns(self, *args, **kwargs):
+		columns = super().get_columns(*args, **kwargs)
+
+		try: # Using a try, which will fail if an error was returned
+			coldict = {}
+			for column in columns.data:
+				coldict[column.title] = column.index
+			columns.data.index_reference = coldict
+		except:
+			pass
+
+		return columns
 
 	# Adds rows to a sheet. Allows you to pass a list of more than 500 rows, and automatically handles timeout errors using exponentially smaller requests
 	def bulk_add_rows(self,

@@ -16,6 +16,23 @@ new_name = sheet.rows[0].cells['Name']  # Get value of first row for column name
 summary_row = sheet.rows['Summary']  # Get the first row on the sheet that says "Summary" in the primary column.
 ```
 **Performance:** A stress test loading a maximum-size sheet (20,000 rows x 25 columns = 500,000 cells) 100 times revealed that a get_sheet operation only takes on average ~0.12 seconds longer with these changes. However, if you want to omit the extra processing, "dicts" can be added to the exclude parameter of the method.
+## List Columns | `smartsheet_client.Sheets.get_columns`
+Usage of the get_columns methid is identical to the [original sdk](https://smartsheet-platform.github.io/api-docs/#list-columns). However, similarly to the Get Sheet method, this then processes the result such that values can be got from the list of columns using column names.
+**Example Usage:**
+This example will retrieve a sheet's columns, then print out the "Start Date" column and update the "End Date" column.
+```
+response = smartsheet_client.Sheets.get_columns(sheetid)
+columns = response.data
+
+print(columns['Start Date'])  # Will print out the Start Date column, without needing to use the index
+
+updated_column = smartsheet.models.Column({
+		'title': 'Finish'
+	})
+
+smartsheet_client.Sheets.update_column(sheetid, columns['End Date'].id, updated_column)
+```
+**Performance:** A stress test loading a list of 400 columns (the maximum) 100 times with and without these changes didn't conclusively determine that this is any slower. Network performance seems to have a greater impact than this method, which runs through the columns very quickly.
 ## Bulk add Rows | `smartsheet_client.Sheets.bulk_add_rows`
 Usage of the bulk_add_rows method is similar to the [original sdk](https://smartsheet-platform.github.io/api-docs/?python#add-rows), but it is not limited to 500 rows. If more than 500 rows are provided, this method will add them in batches and perform some common error handling on behalf of the user.
 **Parameters:**
