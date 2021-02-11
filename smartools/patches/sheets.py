@@ -49,6 +49,8 @@ class SmartoolsSheets(smartsheet.sheets.Sheets):
 			coldict = {}
 			for column in columns.data:
 				coldict[column.title] = column.index
+
+			columns.data = SmartoolsTypedList(smartsheet.models.Column).load(columns.data)
 			columns.data.index_reference = coldict
 		except:
 			pass
