@@ -216,3 +216,4 @@ class SmartoolsSheets(smartsheet.sheets.Sheets):
 smartsheet.sheets.Sheets = SmartoolsSheets
 smartsheet.models.sheet.TypedList = SmartoolsTypedList
 smartsheet.models.row.TypedList = SmartoolsTypedList
+smartsheet.models.column.TypedList = SmartoolsTypedList
