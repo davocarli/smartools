@@ -31,7 +31,7 @@ class Smartsheet(smartsheet.Smartsheet):
 				'ADMIN': 4,
 				'OWNER': 5
 			}
-			self.include_all = 'attachments,cellLinks,data,discussions,filters,forms,rules,ruleRecipients,all,columnType,format,objectValue,rowPermalink,rowWriterInfo,writerInfo'
+			self.include_all = 'shares,workspaceShares,parentObjectFavorite,data,ownerInfo,columnType,proofs,cellLinks,source,groups,rules,format,objectValue,children,profileImage,discussions,lastLogin,filterDefinitions,favorite,scope,writerInfo,attachments,filters,comments,ruleRecipients,permalinks,ganttConfig,sourceSheets,crossSheetReferences,forms,sheetVersion'
 
 
 		# # Returns a list of all the sheets in a workspace. Optionally only includes sheets with specific Strings contained in the sheet name
