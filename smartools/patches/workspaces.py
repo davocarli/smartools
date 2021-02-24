@@ -68,7 +68,6 @@ class SmartoolsWorkspaces(smartsheet.workspaces.Workspaces):
 			workspace_id,  # The ID of the workspace to check for permission requirements
 			permission_level=None  # The minimum permission level required. Can be a number from 1-5 or a String. If None, method will just return the current workspace permission level
 		):
-		access_levels = self.access_levels
 		try:
 			workspace_id = int(workspace_id)
 		except:

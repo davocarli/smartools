@@ -2,15 +2,15 @@ from distutils.core import setup
 setup(
   name = 'smartools',
   packages = ['smartools', 'smartools.patches'],
-  version = '0.6.1',
+  version = '0.6.2',
   license='MIT',
   description = 'A class extending the official smartsheet-python-sdk that adds a new Util subclass with useful helper methods.',
   author = 'David Carli-Arnold',
   author_email = 'davocarli@gmail.com',
   url = 'https://github.com/davocarli',
-  download_url = 'https://github.com/user/reponame/archive/v_01.tar.gz',    # I explain this later on
+  download_url = 'https://github.com/user/reponame/archive/v_01.tar.gz',
   keywords = ['Smartsheet', 'smartsheet-python-sdk', 'subclass'],
-  install_requires=[            # I get to this in a second
+  install_requires=[
           'smartsheet-python-sdk',
       ],
   classifiers=[
