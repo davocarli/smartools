@@ -4,9 +4,6 @@ All of the methods described below can be accessed using the Home class, per the
 
 ## Get Container Using URL | `smartsheet_client.Home.get_container_from_url`
 
-**IMPORTANT NOTE**
-This method has not yet been patched into the Home class. For the time being, you can call it using `smartsheet_client.Util.get_container_from_url`
-
 This method allows you to use a url to a container and get the container.
 **Parameters:**
 - `container_url:` The url of the container that you will be retrieving.
