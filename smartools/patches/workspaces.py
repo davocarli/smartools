@@ -45,17 +45,17 @@ class SmartoolsWorkspaces(smartsheet.workspaces.Workspaces):
 			if (contains is None) \
 			or (exact and contains == sheet.name) \
 			or contains in sheet.name:
-				containers['sheets'].append(sheet.name)
+				containers['sheets'].append(sheet)
 		for sight in parent.sights:
 			if (contains is None) \
 			or (exact and contains == sight.name) \
 			or contains in sight.name:
-				containers['sights'].append(sight.name)
+				containers['sights'].append(sight)
 		for report in parent.reports:
 			if (contains is None) \
 			or (exact and contains == report.name) \
 			or contains in report.name:
-				containers['reports'].append(report.name)
+				containers['reports'].append(report)
 		for folder in parent.folders:
 			child = self.list_containers_in_workspace(workspace_id=None, contains=contains, exact=exact, parent=folder)
 			containers['sheets'].extend(child.sheets)
