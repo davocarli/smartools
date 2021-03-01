@@ -41,7 +41,7 @@ In general, usage of smartools is identical to the standard SDK. All original fu
     - [Get Container Using URL](./docs/home.md#get-container-using-url--smartsheet_clienthomeget_container_from_url)
 
 ## The "Util" class
-A prior version of smartools did not patch the SDK's classes directly, but instead added a new class at smartsheet_client.Util.*method_name*. The use of this class has been deprecated, and calling these methods will now make a deprecation warning then call the newly-patched method directly. The one current exception is the get_container_from_url method, which can still only be called from the Util class.
+A prior version of smartools did not patch the SDK's classes directly, but instead added a new class at smartsheet_client.Util.*method_name*. The use of this class has been deprecated, and calling these methods will now make a deprecation warning then call the newly-patched method directly. These methods may be completely removed in a future release.
 
 
 [smartsheet-python-sdk]: <https://github.com/smartsheet-platform/smartsheet-python-sdk>
