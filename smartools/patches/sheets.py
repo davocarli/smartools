@@ -1,4 +1,5 @@
 import smartsheet
+from smartsheet.smartsheet import fresh_operation
 from .__smartools import SmartoolsObject, access_levels, RequirementError
 from .typed_list import SmartoolsTypedList
 
