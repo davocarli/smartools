@@ -228,6 +228,34 @@ class SmartoolsSheets(smartsheet.sheets.Sheets):
 
 		return response
 
+	def update_automation_rule(self,
+			sheet_id,
+			automation_rule_id,
+			automation_rule_obj
+		):
+
+		if not all(val is not None for val in ['sheet_id', 'automation_rule_id',
+												'automation_rule_obj']):
+			raise ValueError(
+				('One or more required values '
+				 'are missing from call to ' + __name__))
+
+		if isinstance(automation_rule_obj, dict):
+			automation_rule_obj = smartsheet.models.AutomationRule(automation_rule_obj)
+
+		_op = fresh_operation('update_automation_rule')
+		_op['method'] = 'PUT'
+		_op['path'] = '/sheets/' + str(sheet_id) + '/automationrules/' + str(
+			automation_rule_id)
+		_op['json'] = automation_rule_obj
+
+		expected = ['Result', 'AutomationRule']
+
+		prepped_request = self._base.prepare_request(_op)
+		response = self._base.request(prepped_request, expected, _op)
+
+		return response
+
 # Perform Monkey Patch
 smartsheet.sheets.Sheets = SmartoolsSheets
 smartsheet.models.sheet.TypedList = SmartoolsTypedList
