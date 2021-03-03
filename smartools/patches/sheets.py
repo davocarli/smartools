@@ -1,5 +1,5 @@
 import smartsheet
-from smartsheet.smartsheet import fresh_operation
+# from smartsheet.smartsheet import fresh_operation
 from .__smartools import SmartoolsObject, access_levels, RequirementError
 from .typed_list import SmartoolsTypedList
 
@@ -198,63 +198,6 @@ class SmartoolsSheets(smartsheet.sheets.Sheets):
 			pd_row_data.append(row_list)
 
 		return pd.DataFrame(pd_row_data, columns=pd_columns, index=pd_row_labels)
-
-	def get_automation_rule(self,
-			sheet_id,
-			automation_rule_id
-		):
-		_op = fresh_operation('get_automation_rule')
-		_op['method'] = 'GET'
-		_op['path'] = '/sheets/' + str(sheet_id) + '/automationrules/' + str(automation_rule_id)
-
-		expected = 'AutomationRule'
-
-		prepped_request = self._base.prepare_request(_op)
-		response = self._base.request(prepped_request, expected, _op)
-
-		return response
-
-	def list_automation_rules(self,
-			sheet_id
-		):
-		_op = fresh_operation('list_automation_rules')
-		_op['method'] = 'GET'
-		_op['path'] = '/sheets/' + str(sheet_id) + '/automationrules'
-
-		expected = ['IndexResult', 'AutomationRule']
-
-		prepped_request = self._base.prepare_request(_op)
-		response = self._base.request(prepped_request, expected, _op)
-
-		return response
-
-	def update_automation_rule(self,
-			sheet_id,
-			automation_rule_id,
-			automation_rule_obj
-		):
-
-		if not all(val is not None for val in ['sheet_id', 'automation_rule_id',
-												'automation_rule_obj']):
-			raise ValueError(
-				('One or more required values '
-				 'are missing from call to ' + __name__))
-
-		if isinstance(automation_rule_obj, dict):
-			automation_rule_obj = smartsheet.models.AutomationRule(automation_rule_obj)
-
-		_op = fresh_operation('update_automation_rule')
-		_op['method'] = 'PUT'
-		_op['path'] = '/sheets/' + str(sheet_id) + '/automationrules/' + str(
-			automation_rule_id)
-		_op['json'] = automation_rule_obj
-
-		expected = ['Result', 'AutomationRule']
-
-		prepped_request = self._base.prepare_request(_op)
-		response = self._base.request(prepped_request, expected, _op)
-
-		return response
 
 # Perform Monkey Patch
 smartsheet.sheets.Sheets = SmartoolsSheets
