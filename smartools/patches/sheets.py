@@ -205,9 +205,23 @@ class SmartoolsSheets(smartsheet.sheets.Sheets):
 		):
 		_op = fresh_operation('get_automation_rule')
 		_op['method'] = 'GET'
-		_op['path'] = f'/sheets/{sheet_id}/automationrules/{automation_rule_id}'
+		_op['path'] = '/sheets/' + str(sheet_id) + '/automationrules/' + str(automation_rule_id)
 
 		expected = 'AutomationRule'
+
+		prepped_request = self._base.prepare_request(_op)
+		response = self._base.request(prepped_request, expected, _op)
+
+		return response
+
+	def list_automation_rules(self,
+			sheet_id
+		):
+		_op = fresh_operation('list_automation_rules')
+		_op['method'] = 'GET'
+		_op['path'] = '/sheets/' + str(sheet_id) + '/automationrules'
+
+		expected = ['IndexResult', 'AutomationRule']
 
 		prepped_request = self._base.prepare_request(_op)
 		response = self._base.request(prepped_request, expected, _op)
