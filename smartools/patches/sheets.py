@@ -198,6 +198,21 @@ class SmartoolsSheets(smartsheet.sheets.Sheets):
 
 		return pd.DataFrame(pd_row_data, columns=pd_columns, index=pd_row_labels)
 
+	def get_automation_rule(self,
+			sheet_id,
+			automation_rule_id
+		):
+		_op = fresh_operation('get_automation_rule')
+		_op['method'] = 'GET'
+		_op['path'] = f'/sheets/{sheet_id}/automationrules/{automation_rule_id}'
+
+		expected = 'AutomationRule'
+
+		prepped_request = self._base.prepare_request(_op)
+		response = self._base.request(prepped_request, expected, _op)
+
+		return response
+
 # Perform Monkey Patch
 smartsheet.sheets.Sheets = SmartoolsSheets
 smartsheet.models.sheet.TypedList = SmartoolsTypedList
