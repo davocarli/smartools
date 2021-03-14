@@ -24,6 +24,7 @@ class SmartoolsSheets(smartsheet.sheets.Sheets):
 		for column in sheet.columns:
 			coldict[column.title] = column.index
 			if column.primary:
+				coldict[''] = column.index
 				primary_index = column.index
 
 		sheet.columns.index_reference = coldict
