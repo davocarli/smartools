@@ -134,8 +134,8 @@ class SmartoolsSheets(smartsheet.sheets.Sheets):
 				current_retries = retries
 				result['responses'].append(response)
 				result['rows'].extend(response.result)
-			result['status'] = 'SUCCESS'
-			return SmartoolsObject(result)
+		result['status'] = 'SUCCESS'
+		return SmartoolsObject(result)
 
 	# Takes a sheet ID and minimum permission level as arguments, then returns an object including a confirmation of whether the permission level is met
 	def check_sheet_permissions(self,
