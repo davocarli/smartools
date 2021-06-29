@@ -4,7 +4,7 @@ from smartsheet.util import serialize
 from smartsheet.util import deserialize
 from .form import SheetForm
 
-class SmartoolsSheet(smartsheet.models.sheet.Sheet):
+class Sheet(smartsheet.models.sheet.Sheet):
 	pass
 
 	# def __init__(self, props=None, base_obj=None):
@@ -21,4 +21,4 @@ class SmartoolsSheet(smartsheet.models.sheet.Sheet):
 	# def forms(self, value):
 	# 	self._forms.load(value)
 
-# smartsheet.models.sheet.Sheet = SmartoolsSheet
+smartsheet.models.sheet.Sheet = Sheet
