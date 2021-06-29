@@ -1,6 +1,7 @@
 from smartsheet.types import *
 from smartsheet.util import serialize
 from smartsheet.util import deserialize
+from .form import SheetForm
 
 class SmartoolsSheet(smartsheet.models.Sheet):
 
