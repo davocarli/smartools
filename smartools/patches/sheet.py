@@ -5,12 +5,15 @@ from smartsheet.util import deserialize
 from smartsheet.models import Sheet
 from .form import SheetForm
 
+smart = smartsheet.Smartsheet("INIT")
+smartsheet.models.sheet.Sheet
+
 class SmartoolsSheet(Sheet):
 	def __init__(self, props=None, base_obj=None):
 
 		self._forms = SmartoolsTypedList(SheetForm)
 
-		super().__init__(props, base_obj)
+		super(SmartoolsSHeet, self).__init__(props, base_obj)
 
 	@property
 	def forms(self):
@@ -24,7 +27,7 @@ class SmartoolsSheet(Sheet):
 		if key == 'id':
 			self.id_ = value
 		else:
-			super().__setattr__(key, value)
+			super(SmartoolsSheet, self).__setattr__(key, value)
 
 
 
