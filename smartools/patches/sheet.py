@@ -1,3 +1,4 @@
+import smartsheet
 from smartsheet.types import *
 from smartsheet.util import serialize
 from smartsheet.util import deserialize
