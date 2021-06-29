@@ -5,19 +5,20 @@ from smartsheet.util import deserialize
 from .form import SheetForm
 
 class SmartoolsSheet(smartsheet.models.Sheet):
+	pass
 
-	def __init__(self, props=None, base_obj=None):
+	# def __init__(self, props=None, base_obj=None):
 
-		self._forms = SmartoolsTypedList(SheetForm)
+	# 	self._forms = SmartoolsTypedList(SheetForm)
 
-		super(SmartoolsSheet, self).__init__(props, base_obj)
+	# 	super(SmartoolsSheet, self).__init__(props, base_obj)
 
-	@property
-	def forms(self):
-		return self._forms
+	# @property
+	# def forms(self):
+	# 	return self._forms
 	
-	@forms.setter
-	def forms(self, value):
-		self._forms.load(value)
+	# @forms.setter
+	# def forms(self, value):
+	# 	self._forms.load(value)
 
 smartsheet.models.sheet.Sheet = SmartoolsSheet
