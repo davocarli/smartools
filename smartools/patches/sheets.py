@@ -11,20 +11,6 @@ class SmartoolsSheets(smartsheet.sheets.Sheets):
 	def smartools(self):
 		return 'smartools methods are available!'
 
-	def __init__(self, props=None, base_obj=None):
-
-		self._forms = SmartoolsTypedList(SheetForm)
-
-		super(SmartoolsSheets, self).__init__(props, base_obj)
-
-	@property
-	def forms(self):
-		return self._forms
-	
-	@forms.setter
-	def forms(self, value):
-		self._forms.load(value)
-
 	# Gets the sheet and sets index references for columns, rows, and cells
 	def get_sheet(self, *args, **kwargs):
 		sheet = super().get_sheet(*args, **kwargs)
