@@ -10,7 +10,7 @@ class SmartoolsSheet(Sheet):
 
 		self._forms = SmartoolsTypedList(SheetForm)
 
-		super(Sheet, self).__init__(props, base_obj)
+		super().__init__(props, base_obj)
 
 	@property
 	def forms(self):
@@ -24,7 +24,7 @@ class SmartoolsSheet(Sheet):
 		if key == 'id':
 			self.id_ = value
 		else:
-			super(Sheet, self).__setattr__(key, value)
+			super().__setattr__(key, value)
 
 
 
