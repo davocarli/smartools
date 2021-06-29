@@ -25,6 +25,6 @@ class Sheet(smartsheet.models.sheet.Sheet):
 		if key == 'id':
 			self.id_ = value
 		else:
-			super(Sheet, self.).__setattr__(key, value)
+			super(Sheet, self).__setattr__(key, value)
 
 smartsheet.models.sheet.Sheet = Sheet
