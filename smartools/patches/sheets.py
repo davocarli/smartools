@@ -15,7 +15,7 @@ class SmartoolsSheets(smartsheet.sheets.Sheets):
 
 		self._forms = SmartoolsTypedList(SheetForm)
 
-		super(SmartoolsSheets, self).__init__()
+		super(SmartoolsSheets, self).__init__(props, base_obj)
 
 	@property
 	def forms(self):
