@@ -2,6 +2,7 @@ import smartsheet
 # from smartsheet.smartsheet import fresh_operation
 from .__smartools import SmartoolsObject, access_levels, RequirementError
 from .typed_list import SmartoolsTypedList
+from .form import SheetForm
 
 smart = smartsheet.Smartsheet("INIT")
 smart.Sheets
@@ -9,6 +10,20 @@ smart.Sheets
 class SmartoolsSheets(smartsheet.sheets.Sheets):
 	def smartools(self):
 		return 'smartools methods are available!'
+
+	def __init__(self, props=None, base_obj=None):
+
+		self._forms = TypedList(SheetForm)
+
+		super(SmartoolsSheets, self).__init__()
+
+	@property
+	def forms(self):
+		return self._forms
+	
+	@forms.setter
+	def forms(self, value):
+		self._forms.load(value)
 
 	# Gets the sheet and sets index references for columns, rows, and cells
 	def get_sheet(self, *args, **kwargs):
