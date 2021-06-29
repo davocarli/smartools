@@ -3,3 +3,4 @@ from .sheets import SmartoolsSheets
 from .workspaces import SmartoolsWorkspaces
 from .folders import SmartoolsFolders
 from .home import SmartoolsHome
+from .reports import SmartoolsReports
