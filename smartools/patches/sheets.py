@@ -13,7 +13,7 @@ class SmartoolsSheets(smartsheet.sheets.Sheets):
 
 	def __init__(self, props=None, base_obj=None):
 
-		self._forms = TypedList(SheetForm)
+		self._forms = SmartoolsTypedList(SheetForm)
 
 		super(SmartoolsSheets, self).__init__()
 
