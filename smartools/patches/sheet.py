@@ -18,4 +18,4 @@ class SmartoolsSheet(smartsheet.models.Sheet):
 	def forms(self, value):
 		self._forms.load(value)
 
-smartsheet.models.Sheet = SmartoolsSheet
+smartsheet.models.sheet.Sheet = SmartoolsSheet
