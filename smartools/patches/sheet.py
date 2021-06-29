@@ -21,4 +21,10 @@ class Sheet(smartsheet.models.sheet.Sheet):
 	# def forms(self, value):
 	# 	self._forms.load(value)
 
+	def __setattr__(self, key, value):
+		if key == 'id':
+			self.id_ = value
+		else:
+			super(Sheet, self.).__setattr__(key, value)
+
 smartsheet.models.sheet.Sheet = Sheet
