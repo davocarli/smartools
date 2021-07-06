@@ -37,7 +37,8 @@ class SmartoolsWorkspaces(smartsheet.workspaces.Workspaces):
 		containers = {
 			'sheets': [],
 			'sights': [],
-			'reports': []
+			'reports': [],
+			'folders': [],
 		}
 		if parent == None:
 			parent = self.get_workspace(workspace_id, load_all=True, **kwargs)
@@ -57,6 +58,10 @@ class SmartoolsWorkspaces(smartsheet.workspaces.Workspaces):
 			or contains in report.name:
 				containers['reports'].append(report)
 		for folder in parent.folders:
+			if (contains is None) \
+			or (exact and contains == folder.name) \
+			or contains in folder.name:
+				containers['folders'].append(folder)
 			child = self.list_containers_in_workspace(workspace_id=None, contains=contains, exact=exact, parent=folder)
 			containers['sheets'].extend(child.sheets)
 			containers['sights'].extend(child.sights)

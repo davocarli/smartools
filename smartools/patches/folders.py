@@ -34,7 +34,8 @@ class SmartoolsFolders(smartsheet.folders.Folders):
 		containers = {
 			'sheets': [],
 			'sights': [],
-			'reports': []
+			'reports': [],
+			'folders': [],
 		}
 		parent = self.get_folder(folder_id, **kwargs)
 		for sheet in parent.sheets:
@@ -53,6 +54,10 @@ class SmartoolsFolders(smartsheet.folders.Folders):
 			or contains in report.name:
 				containers['reports'].append(report)
 		for folder in parent.folders:
+			if (contains is None) \
+			or (exact and contains == folder.name) \
+			or contains in folder.name:
+				containers['folders'].append(folder)
 			child = self.list_containers_in_folder(folder_id=folder.id, contains=contains, exact=exact, **kwargs)
 			containers['sheets'].extend(child.sheets)
 			containers['sights'].extend(child.sights)
