@@ -80,6 +80,7 @@ class SmartoolsSheets(smartsheet.sheets.Sheets):
 						result['responses'].append(response)
 						result['status'] = 'ERROR'
 						result['error_message'] = 'See last response for detailed error.'
+						result['last_response'] = response
 						return SmartoolsObject(result)
 			else:
 				result['data'].extend(response.data)
@@ -87,6 +88,7 @@ class SmartoolsSheets(smartsheet.sheets.Sheets):
 				current_retries = retries
 				result['responses'].append(response)
 				result['rows'].extend(response.result)
+		result['last_response'] = result['responses'][-1]
 		result['status'] = 'SUCCESS'
 		return SmartoolsObject(result)
 
@@ -127,6 +129,7 @@ class SmartoolsSheets(smartsheet.sheets.Sheets):
 						result['responses'].append(response)
 						result['status'] = 'ERROR'
 						result['error_message'] = 'See last response for detailed error.'
+						result['last_response'] = response
 						return SmartoolsObject(result)
 			else:
 				result['data'].extend(response.data)
@@ -134,6 +137,7 @@ class SmartoolsSheets(smartsheet.sheets.Sheets):
 				current_retries = retries
 				result['responses'].append(response)
 				result['rows'].extend(response.result)
+		result['last_response'] = result['responses'][-1]
 		result['status'] = 'SUCCESS'
 		return SmartoolsObject(result)
 
