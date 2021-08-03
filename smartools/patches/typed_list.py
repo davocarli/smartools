@@ -10,7 +10,7 @@ class SmartoolsTypedList(smartsheet.types.TypedList):
 		return 'smartools methods are available!'
 
 	def __getitem__(self, idx):
-		if idx in self.index_reference:
+		if self.index_reference is not None and idx in self.index_reference:
 			idx = self.index_reference(idx)
 		return super().__getitem__(idx)
 
