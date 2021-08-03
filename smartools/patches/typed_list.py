@@ -11,7 +11,7 @@ class SmartoolsTypedList(smartsheet.types.TypedList):
 
 	def __getitem__(self, idx):
 		if self.index_reference is not None and idx in self.index_reference:
-			idx = self.index_reference(idx)
+			idx = self.index_reference[idx]
 		return super().__getitem__(idx)
 
 # Perform Monkey Patch
