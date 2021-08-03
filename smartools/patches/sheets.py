@@ -23,6 +23,7 @@ class SmartoolsSheets(smartsheet.sheets.Sheets):
 
 		for column in sheet.columns:
 			coldict[column.title] = column.index
+			coldict[column.id] = column.index
 			if column.primary:
 				coldict[''] = column.index
 				primary_index = column.index
