@@ -10,8 +10,8 @@ class SmartoolsTypedList(smartsheet.types.TypedList):
 		return 'smartools methods are available!'
 
 	def __getitem__(self, idx):
-		if isinstance(idx, str) and self.index_reference is not None:
-			idx = self.index_reference[idx]
+		if idx in self.index_reference:
+			idx = self.index_reference(idx)
 		return super().__getitem__(idx)
 
 # Perform Monkey Patch
