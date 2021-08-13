@@ -62,6 +62,7 @@ class SmartoolsFolders(smartsheet.folders.Folders):
 			containers['sheets'].extend(child.sheets)
 			containers['sights'].extend(child.sights)
 			containers['reports'].extend(child.reports)
+			containers['folders'].extend(child.folders)
 		return SmartoolsObject(containers)
 
 	# Takes a folder ID as an argument, and returns a boolean indicating whether it is a valid folder that the user has access to

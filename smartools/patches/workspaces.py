@@ -66,6 +66,7 @@ class SmartoolsWorkspaces(smartsheet.workspaces.Workspaces):
 			containers['sheets'].extend(child.sheets)
 			containers['sights'].extend(child.sights)
 			containers['reports'].extend(child.reports)
+			containers['folders'].extend(child.folders)
 		return SmartoolsObject(containers)
 
 	# Takes a Workspace ID and minimum permission level as arguments, then returns an object includinga confirmation of whether the permission level is met
