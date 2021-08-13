@@ -17,30 +17,33 @@ class SmartoolsSheets(smartsheet.sheets.Sheets):
 		if 'exclude' in kwargs and 'dicts' in kwargs['exclude']:
 			return sheet
 		
-		coldict = {}
+		try:
+			coldict = {}
 
-		primary_index = None
+			primary_index = None
 
-		for column in sheet.columns:
-			coldict[column.title] = column.index
-			coldict[column.id] = column.index
-			if column.primary:
-				coldict[''] = column.index
-				primary_index = column.index
+			for column in sheet.columns:
+				coldict[column.title] = column.index
+				coldict[column.id] = column.index
+				if column.primary:
+					coldict[''] = column.index
+					primary_index = column.index
 
-		sheet.columns.index_reference = coldict
+			sheet.columns.index_reference = coldict
 
-		rowdict = {}
+			rowdict = {}
 
-		for i in range(len(sheet.rows)):
-			sheet.rows[i].cells.index_reference = coldict
-			primary_value = str(sheet.rows[i].cells[primary_index].value or '')
-			if primary_value not in rowdict:
-				rowdict[primary_value] = i
+			for i in range(len(sheet.rows)):
+				sheet.rows[i].cells.index_reference = coldict
+				primary_value = str(sheet.rows[i].cells[primary_index].value or '')
+				if primary_value not in rowdict:
+					rowdict[primary_value] = i
 
-		sheet.rows.index_reference = rowdict
+			sheet.rows.index_reference = rowdict
 
-		sheet.primary_index = primary_index
+			sheet.primary_index = primary_index
+		except:
+			pass
 
 		return sheet
 
