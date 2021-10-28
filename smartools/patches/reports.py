@@ -8,6 +8,23 @@ class SmartoolsReports(smartsheet.reports.Reports):
 	def smartools(self):
 		return 'smartools methods are available!'
 
+	def create_report(self):
+		"""Creates a report in the "Sheets" folder.
+		
+		Returns: Result
+		"""
+		_op = fresh_operation('create_report')
+		_op['method'] = 'PUT'
+		_op['path'] = '/internal/reports'
+		_op['json'] = {}
+
+		expected = ['Result', 'Report']
+
+		prepped_request = self._base.prepare_request(_op)
+		response = self._base.request(prepped_request, expected, _op)
+
+		return response
+	
 	def update_report(self, report_id, report_obj):
 		"""Updates the specified Report.
 
