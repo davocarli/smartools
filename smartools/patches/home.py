@@ -62,7 +62,7 @@ class SmartoolsHome(smartsheet.home.Home):
 
 		return updated_sight
 
-	def create_sight(self, report_obj):
+	def create_report(self, report_obj):
 		"""Create a report from scratch in the user's Sheets folder within
 		Home.
 
