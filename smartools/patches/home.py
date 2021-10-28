@@ -62,16 +62,28 @@ class SmartoolsHome(smartsheet.home.Home):
 
 		return updated_sight
 
-	# def create_report(self, report_obj):
-	# 	"""Create a report from scratch in the user's Sheets folder within
-	# 	Home.
+	def create_sight(self, report_obj):
+		"""Create a report from scratch in the user's Sheets folder within
+		Home.
 
-	# 	Args:
-	# 		report_obj (Report): Report object.
+		Args:
+			report_obj (Report): Report object.
+		
+		Returns: Result
+		"""
+		_op = fresh_operation('create_report')
+		_op['method'] = 'POST'
+		_op['path'] = '/internal/reports'
+		_op['json'] = {}
 
-	# 	Returns:
-	# 		Result
-	# 	"""
+		expected = ['Result', 'Report']
+
+		prepped_request = self._base.prepare_request(_op)
+		response = self._base.request(prepped_request, expected, _op)
+		
+		updated_report = self._base.Reports.update_report(response.result.id, report_obj)
+
+		return updated_report
 
 
 # Perform Monkey Patch

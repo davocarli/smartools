@@ -93,5 +93,46 @@ class SmartoolsWorkspaces(smartsheet.workspaces.Workspaces):
 			permission_met = permission_level <= access_levels[str(space.access_level)]
 			return SmartoolsObject({'status': 'SUCCESS', 'access_met': permission_met, 'access_level': space.access_level, 'workspace_response': space})
 
+	def create_sight_in_workspace(self, workspace_id, sight_obj):
+		"""Create a Sight from scratch in the specified Workspace.
+
+		Args:
+			workspace_id (int): Workspace ID
+			sight_obj (Sight): Sight object.
+
+		Returns: Result
+		"""
+		created_sight = self._base.Home.create_sight(sight_obj)
+		response = self._base.Sights.move_sight(
+				created_sight.result.id,
+				smartsheet.models.ContainerDestination({
+					'destination_type': 'workspace',
+					'destination_id': workspace_id,
+				})
+		)
+
+		return response
+
+	def create_report_in_workspace(self, workspace_id, report_obj):
+		"""Create a Report from scratch in the specified Workspace.
+		
+		Args:
+			workspace_id (int): Workspace ID
+			report_obj (Report): Report object.
+			
+		Returns: Result
+		"""
+		created_report = self._base.Home.create_report(report_obj)
+		response = self._base.Reports.move_report(
+				created_report.result.id,
+				smartsheet.models.ContainerDestination({
+					'destination_type': 'workspace',
+					'destination_id': workspace_id,
+				})
+		)
+
+		return response
+
+
 # Perform Monkey Patch
 smartsheet.workspaces.Workspaces = SmartoolsWorkspaces

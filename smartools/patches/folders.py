@@ -74,5 +74,46 @@ class SmartoolsFolders(smartsheet.folders.Folders):
 			return False
 		return True
 
+	def create_sight_in_folder(self, folder_id, sight_obj):
+		"""Create a Sight from scratch in the specified Folder.
+
+		Args:
+			folder_id (int): Folder ID
+			sight_obj (Sight): Sight object.
+
+		Returns: Result
+		"""
+		created_sight = self._base.Home.create_sight(sight_obj)
+		response = self._base.Sights.move_sight(
+				created_sight.result.id,
+				smartsheet.models.ContainerDestination({
+					'destination_type': 'folder',
+					'destination_id': folder_id,
+				})
+		)
+
+		return response
+
+	def create_report_in_folder(self, folder_id, report_obj):
+		"""Create a Report from scratch in the specified Folder.
+		
+		Args:
+			folder_id (int): Folder ID
+			report_obj (Report): Report object.
+			
+		Returns: Result
+		"""
+		created_report = self._base.Home.create_report(report_obj)
+		response = self._base.Reports.move_report(
+				created_report.result.id,
+				smartsheet.models.ContainerDestination({
+					'destination_type': 'folder',
+					'destination_id': folder_id,
+				})
+		)
+
+		return response
+
+
 # Perform Monkey Patch
 smartsheet.folders.Folders = SmartoolsFolders
