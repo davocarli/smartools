@@ -58,7 +58,7 @@ class SmartoolsHome(smartsheet.home.Home):
 		prepped_request = self._base.prepare_request(_op)
 		response = self._base.request(prepped_request, expected, _op)
 		
-		updated_sight = smartsheet.sights.Sights.update_sight(sight_obj)
+		updated_sight = self._base.Sights.update_sight(response.result.id, sight_obj)
 
 		return updated_sight
 
