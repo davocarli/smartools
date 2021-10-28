@@ -1,4 +1,5 @@
 import smartsheet
+from smartsheet import fresh_operation
 
 smart = smartsheet.Smartsheet("INIT")
 smart.Home
@@ -38,6 +39,39 @@ class SmartoolsHome(smartsheet.home.Home):
 
 		return None
 
+	def create_sight(self, sight_obj):
+		"""Create a dashboard from scratch in the user's Sheets folder within
+		Home.
+
+		Args:
+			sight_obj (Sight): Sight object.
+		
+		Returns: Result
+		"""
+		_op = fresh_operation('create_sight')
+		_op['method'] = 'POST'
+		_op['path'] = '/internal/sights'
+		_op['json'] = {}
+
+		expected = ['Result', 'Sight']
+
+		prepped_request = self._base.prepare_request(_op)
+		response = self._base.request(prepped_request, expected, _op)
+		
+		updated_sight = smartsheet.sights.Sights.update_sight(sight_obj)
+
+		return updated_sight
+
+	# def create_report(self, report_obj):
+	# 	"""Create a report from scratch in the user's Sheets folder within
+	# 	Home.
+
+	# 	Args:
+	# 		report_obj (Report): Report object.
+
+	# 	Returns:
+	# 		Result
+	# 	"""
 
 
 # Perform Monkey Patch
