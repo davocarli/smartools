@@ -1,4 +1,5 @@
 import smartsheet
+import math
 from smartsheet import fresh_operation
 
 smart = smartsheet.Smartsheet("INIT")
@@ -69,6 +70,43 @@ class SmartoolsReports(smartsheet.reports.Reports):
 		response = self._base.request(prepped_request, expected, _op)
 
 		return response
+
+	def get_large_report(self, report_id, page_size=None, include=None, level=None, **kwargs):
+		"""Load a large report by automatically handling paging
+		
+		Args:
+			Same as get_report with 'page' removed.
+			**kwargs are passed to get_report for future compatibility.
+
+		Returns:
+			Report
+		"""
+		if 'page' in kwargs:
+			raise TypeError("You may not specify 'page' when using get_large_report")
+		
+		report = self.get_report(
+			report_id=report_id,
+			page_size=page_size,
+			page=1,
+			include=include,
+			level=level,
+			**kwargs,
+		)
+
+		total_pages = math.ceil(report.total_row_count / len(report.rows))
+
+		for i in range(2, total_pages + 1):
+			next_page = smart.Reports.get_report(
+				report_id=report_id,
+				page_size=page_size,
+				page=i,
+				include=include,
+				level=level,
+				**kwargs,
+			)
+			report.rows.extend(next_page.rows)
+		
+		return report
 
 
 # Perform Monkey Patch
