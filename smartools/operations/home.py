@@ -1,16 +1,11 @@
-import smartsheet
+from smartsheet.home import Home
 from smartsheet import fresh_operation
 
-smart = smartsheet.Smartsheet("INIT")
-smart.Home
-
-class SmartoolsHome(smartsheet.home.Home):
-	def smartools(self):
-		return 'smartools methods are available!'
+class SmartoolsHome(Home):
 
 	def get_container_from_url(self,
-			container_url,  # THe url to be matched to an existingSmartsheet item
-			search_list=None  # (Optional) A list of items to search through. If provided will not reload Home.
+			container_url,
+			search_list=None,
 		):
 		q = container_url.find('?')
 		if q != -1:
@@ -84,7 +79,3 @@ class SmartoolsHome(smartsheet.home.Home):
 		updated_report = self._base.Reports.update_report(response.result.id, report_obj)
 
 		return updated_report
-
-
-# Perform Monkey Patch
-smartsheet.home.Home = SmartoolsHome

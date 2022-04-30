@@ -1,30 +1,12 @@
-import smartsheet
 import math
+
 from smartsheet import fresh_operation
+from smartsheet.reports import Reports
 
-smart = smartsheet.Smartsheet("INIT")
-smart.Reports
+from smartools.types.enumerated_value import SmartoolsEnumeratedValue
+from smartools.models.enums import SmartoolsAccessLevel
 
-class SmartoolsReports(smartsheet.reports.Reports):
-	def smartools(self):
-		return 'smartools methods are available!'
-
-	def create_report(self):
-		"""Creates a report in the "Sheets" folder.
-		
-		Returns: Result
-		"""
-		_op = fresh_operation('create_report')
-		_op['method'] = 'PUT'
-		_op['path'] = '/internal/reports'
-		_op['json'] = {}
-
-		expected = ['Result', 'Report']
-
-		prepped_request = self._base.prepare_request(_op)
-		response = self._base.request(prepped_request, expected, _op)
-
-		return response
+class SmartoolsReports(Reports):
 	
 	def update_report(self, report_id, report_obj):
 		"""Updates the specified Report.
@@ -96,7 +78,8 @@ class SmartoolsReports(smartsheet.reports.Reports):
 		total_pages = math.ceil(report.total_row_count / len(report.rows))
 
 		for i in range(2, total_pages + 1):
-			next_page = smart.Reports.get_report(
+			print(f'getting page {i}')
+			next_page = self.get_report(
 				report_id=report_id,
 				page_size=page_size,
 				page=i,
@@ -108,6 +91,13 @@ class SmartoolsReports(smartsheet.reports.Reports):
 		
 		return report
 
-
-# Perform Monkey Patch
-smartsheet.reports.Reports = SmartoolsReports
+	def get_access_level(
+		self,
+		report_id,
+		):
+		report = self.get_report(report_id, page=0)
+		if hasattr(report, 'result') and hasattr(report.result, 'error_code'):
+			level = SmartoolsEnumeratedValue(SmartoolsAccessLevel)
+			level.set('UNSHARED')
+			return level
+		return report.access_level
