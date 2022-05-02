@@ -73,6 +73,8 @@ class CellFormat(object):
 
     @property
     def value(self):
+        if all(x == '' for x in self._value):
+            return None
         return ','.join(self._value)
 
     @value.setter
