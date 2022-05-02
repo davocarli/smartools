@@ -7,6 +7,9 @@ from smartsheet.smartsheet import OperationErrorResult
 
 class Smartools(smartsheet.Smartsheet):
 
+    def smartools(self):
+        print('Smartools v1.0.0')
+
     def __getattr__(self, name):
         """
         Handle sub-class instantiation.
@@ -17,6 +20,8 @@ class Smartools(smartsheet.Smartsheet):
         Returns:
             Instance of named class.
         """
+        if name == 'smartools':
+            return self.smartools
         try:
             # smartools api class first
             class_ = getattr(importlib.import_module(
