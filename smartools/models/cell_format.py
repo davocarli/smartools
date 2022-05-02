@@ -26,8 +26,22 @@ class CellFormat(object):
         'date_format',
     ]
     EMPTY_VALUE = ['' for _ in range(17)]
+    FONT_SIZES = {
+        8: 'EIGHT',
+        9: 'NINE',
+        10: 'TEN',
+        12: 'TWELVE',
+        14: 'FOURTEEN',
+        16: 'SIXTEEN',
+        18: 'EIGHTEEN',
+        20: 'TWENTY',
+        24: 'TWENTYFOUR',
+        28: 'TWENTYEIGHT',
+        32: 'THIRTYTWO',
+        36: 'THIRTYSIX',
+    }
 
-    def __init__(self, initial_value=None):
+    def __init__(self, initial_value=None, level=0):
         self._font_family = SmartoolsEnumeratedValue(FontFamily)
         self._font_size = SmartoolsEnumeratedValue(FontSize)
 
@@ -47,6 +61,8 @@ class CellFormat(object):
         self._number_format = SmartoolsEnumeratedValue(NumberFormat)
         self._text_wrap = SmartoolsEnumeratedValue(FormatSetting)
         self._date_format = SmartoolsEnumeratedValue(DateFormat)
+
+        self._level = level
 
         self._value = self.EMPTY_VALUE
         if initial_value:
@@ -92,6 +108,8 @@ class CellFormat(object):
     
     @font_size.setter
     def font_size(self, value):
+        if isinstance(value, int) and self._level > 0:
+            value = self.FONT_SIZES[value]
         self._font_size.set(value)
         if self.font_size.value is None:
             self._value[1] = ''

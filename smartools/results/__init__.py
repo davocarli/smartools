@@ -1,1 +1,0 @@
-from .bulk_result import SmartoolsBulkResult

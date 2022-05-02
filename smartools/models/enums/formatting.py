@@ -10,17 +10,29 @@ class FontFamily(Enum):
 class FontSize(Enum):
 
     EIGHT = 0
+    f8 = 0
     NINE = 1
+    f9 = 1
     TEN = 2
+    f10 = 2
     TWELVE = 3
+    f12 = 3
     FOURTEEN = 4
+    f14 = 4
     SIXTEEN = 5
+    f16 = 5
     EIGHTEEN = 6
+    f18 = 6
     TWENTY = 7
+    f20 = 7
     TWENTYFOUR = 8
+    f24 = 8
     TWENTYEIGHT = 9
+    f28 = 9
     THIRTYTWO = 10
+    f32 = 10
     THIRTYSIX = 11
+    f36 = 11
 
 class FormatSetting(Enum):
 
