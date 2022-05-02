@@ -68,6 +68,9 @@ class CellFormat(object):
         if initial_value:
             self.value = initial_value
 
+    def serialize(self):
+        return self.value
+
     @property
     def value(self):
         return ','.join(self._value)
