@@ -1,78 +1,71 @@
-##### [Back to README](/README.md)
-# Workspaces class
-All of the methods described below can be accessed using the Workspaces class, per the examples found in the sdk documentation [here](https://smartsheet-platform.github.io/api-docs/?python#workspaces).
+# SmartoolsWorkspaces Class
+Smartools adds several new methods to the Workspaces class. All of these can be accessed through `smartsheet_client.Workspaces.<method_name>`
 
-## List Sheets  | `smartsheet_client.Workspaces.list_sheets_in_workspace`
-This method allows you to list all of the sheets in a workspace, or optionally provide a string to match to sheet names to only retrieve those sheets.
-**Parameters:**
-- `workspace_id:` The ID of the workspace from which sheets will be retrieved.
-- `contains:` (Optional) A string to match to sheet names for them to be included.
-- `exact:` (Optional) If given True, the string must exactly match the sheet name. Otherwise, the sheet name must only contain the match.
-
-**Returns:**
-A list containing sheet objects from the workspace. They are not full sheets (no grid data), but rather the sheets as they would be returned when making a [get_workspace](https://smartsheet-platform.github.io/api-docs/?python#get-workspace) call.
-**Example Usage**
-This example will get all sheets in a workspace that contain "Metrics" in the name, then print their sheetnames.
+### `list_sheets_in_workspace`
+The `list_sheets_in_workspace` method will return a list of all the sheets inside a workspace, its folders, and subfolders. This list is a `ContainerList` object that can be indexed by sheet name.
 ```
-workspace_id = 4236972823734148
+# Example
+sheets = smart.Workspaces.list_sheets_in_workspace(workspace_id)
 
-sheets = smart.Workspaces.list_sheets_in_workspace(
-	workspace_id,
-	'Metrics'
-)
+target_sheet = sheets['My Sheet Name']
 
-for sheet in sheets:
-	print(sheet.name)
+target_sheet.name  # "My Sheet Name"
 ```
 
-## List Containers | `smartsheet_client.Workspaces.list_containers_in_workspace`
-This method allows you to get all the contents of a workspace, separated into lists by container type. You can optionally provide a string to match to container names in order to only retrieve those containers.
-**Parameters:**
-Parameters are identical to [list_sheets_in_workspace](#list-sheets---smartsheet_clientworkspaceslist_sheets_in_workspace). See there.
-**Returns:**
-Returns a SmartoolsObject that contains the following attributes:
-- `sheets:` The list of sheets returned.
-- `sights:` The list of dashboards returned.
-- `reports:` The list of reports returned.
-**Example Usage:**
-This example will retrieve all of the containers in the workspace that contain 'Project Alpha' in the name, then print out their names.
+**Args**
+- workspace_id
+	- The ID of the workspace you will be retrieving sheets from
+- contains (Optional - default `None`)
+	- A partial match to the names of the sheets that will be retrieved. For example, providing `contains='Project Plan'` will return a list of all the sheets that contain "Project Plan" in their sheet name.
+- exact (Optional - default `False`)
+	- If `contains` is provided and `exact = True`, only sheets with a perfect match to the provided name will be returned, rather than a partial match.
+- **kwargs
+	- You may provide any additional keyword arguments to be passed on when retrieving the workspace.
+
+### `list_containers_in_workspace`
+The `list_containers_in_workspace` method functions similarly to the `list_sheets_in_workspace` method, but will instead return a `smartsheet.models.WorkspaceContent` object. This object has attributes separating the lists of `sheets`, `sights`, `reports`, `templates`, and `folders`.
 ```
-workspace_id = 4236972823734148
+# Example
 
-containers = smart.Workspaces.list_containers_in_workspace(
-	workspace_id,
-	'Project Alpha'
-)
+# Retrieve all items in the workspace that contain "Project A" in the name.
+items = smart.Workspaces.list_containers_in_workspace(workspace_id, contains='Project A')
 
-for sheet in containers.sheets:
-	print(sheet.name)
-for sight in containers.sights:
-	print(sight.name)
-for report in containers.reports:
-	print(report.name)
+items.folders  # ["Project A"]
+items.sheets   # ["Project Plan - Project A", "Project A Budget"]
+items.reports  # ["Project A Summary Report"]
 ```
 
-## Check Workspace Permissions | `smartsheet_client.Workspaces.check_workspace_permissions`
-A method that performs the most efficient API call possible and check whether you have certain permissions on a sheet.
-**Parameters:**
-`workspace_id`: The ID of the sheet whose permissions are being checked.
-`permission_level`: The minimum permission level you are checking for. Can be an integer (VIEWER=1, OWNER=5) or a string ("VIEWER", "EDITOR", "EDITOR_SHARE", "ADMIN", "OWNER").
-**Returns:**
-An object with the following attributes:
-- `status:` A string indicating success of the operation.
-- `access_met:` A boolean indicating if the specified permission level was met.
-- `access_level:` The sheet's actual/specific permission level.
-- `sheet_response:` A sheet object that was retrieved as part of the operation. This object contains very minimal information (no rows, no columns).
+**Args**
+- workspace_id
+	- The ID of the workspace you will be retrieving items from
+- contains (Optional - default `None`)
+	- A partial match to the names of the items that will be retrieved. For example, providing `contains='Project Plan'` will return a list of all the items that contain "Project Plan" in their name.
+- exact (Optional - default `False`)
+	- If `contains` is provided and `exact = True`, only items with a perfect match to the provided name will be returned, rather than a partial match.
+- **kwargs
+	- You may provide any additional keyword arguments to be passed on when retrieving the workspace.
 
-**Example Usage:**
-This example will check if the user has at least "Admin" permissions on a workspace.
-```
-workspace_id = 8008241872430980
+### `get_access_level`
+The `get_access_level` method makes the smallest request to get a workspace possible (don't load subfolders), and returns the access level of the authenticated user to the workspace. If the workspace cannot be retrieved, it will return an 'UNSHARED' access level.
 
-permission_check = smart.Workspaces.check_workspace_permissions(workspace_id, 4)
+**Args**
+- workspace_id
+	- The workspace to get your access level for.
 
-if permission_check.access_met:
-	print('You have Admin access')
-else:
-	print('You don't have Admin access')
-```
+### `create_sight_in_workspace`
+The `create_sight_in_workspace` method will create a sight/dashboard at the root of the specified workspace. Only the name of the sight/dashboard can be specified.
+
+**Args**
+- workspace_id
+	- The ID of the workspace where the sight will be created.
+- sight_obj
+	- A `smartsheet.models.Sight` object that will be created. Only the "name" attribute will be used.
+
+### `create_report_in_workspace`
+The `create_report_in_workspace` method will create a report at the root of the specified workspace. Only the name of the report can be specified.
+
+**Args**
+- workspace_id
+	- The ID of the workspace where the report will be created.
+- report_obj
+	- A `smartsheet.models.Report` object that will be created. Only the "name" attribute will be used.

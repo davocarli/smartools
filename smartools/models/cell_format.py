@@ -206,11 +206,13 @@ class CellFormat(object):
     @text_color.setter
     def text_color(self, value):
         if isinstance(value, str):
+            if value.startswith('#'):
+                value = value.replace('#', 'c')
             try:
                 Color[value]
                 self._text_color.set(value)
             except KeyError:
-                self._text_color.set('x'+value)
+                self._text_color.set('c'+value)
         else:
             self._text_color.set(value)
         if self._text_color.value is None:
@@ -230,7 +232,7 @@ class CellFormat(object):
                 Color[value]
                 self._background_color.set(value)
             except KeyError:
-                self._background_color.set('x'+value)
+                self._background_color.set('c'+value)
         else:
             self._background_color.set(value)
         if self._background_color.value is None:
@@ -250,7 +252,7 @@ class CellFormat(object):
                 Color[value]
                 self._taskbar_color.set(value)
             except KeyError:
-                self._taskbar_color.set('x'+value)
+                self._taskbar_color.set('c'+value)
         else:
             self._taskbar_color.set(value)
         if self._taskbar_color.value is None:

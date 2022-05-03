@@ -1,72 +1,71 @@
-##### [Back to README](/README.md)
-# Folders class
-All of the methods described below can be accessed using the Folders class, per the examples found in the sdk documentation [here](https://smartsheet-platform.github.io/api-docs/?python#folders).
+# SmartoolsFolders Class
+Smartools adds several new methods to the Folders class. All of these can be accessed through `smartsheet_client.Folders.<method_name>`
 
-## List Sheets  | `smartsheet_client.Folders.list_sheets_in_folder`
-This method allows you to list all of the sheets in a folder, or optionally provide a string to match to sheet names to only retrieve those sheets.
-**Parameters:**
-- `folder_id:` The ID of the folder from which sheets will be retrieved.
-- `contains:` (Optional) A string to match to sheet names for them to be included.
-- `exact:` (Optional) If given True, the string must exactly match the sheet name. Otherwise, the sheet name must only contain the match.
-
-**Returns:**
-A list containing sheet objects from the folder. They are not full sheets (no grid data), but rather the sheets as they would be returned when making a [get_folder](https://smartsheet-platform.github.io/api-docs/?python#get-folder) call.
-**Example Usage**
-This example will get all sheets in a folder that contain "Metrics" in the name, then print their sheetnames.
+### `list_sheets_in_folder`
+The `list_sheets_in_folder` method will return a list of all the sheets inside a folder and its subfolders. This list is a `ContainerList` object that can be indexed by sheet name.
 ```
-folder_id = 4236972823734148
+# Example
+sheets = smart.Folders.list_sheets_in_folder(folder_id)
 
-sheets = smart.folders.list_sheets_in_folder(
-	folder_id,
-	'Metrics'
-)
+target_sheet = sheets['My Sheet Name']
 
-for sheet in sheets:
-	print(sheet.name)
+target_sheet.name  # "My Sheet Name"
 ```
 
-## List Containers | `smartsheet_client.Folders.list_containers_in_folder`
-This method allows you to get all the contents of a folder, separated into lists by container type. You can optionally provide a string to match to container names in order to only retrieve those containers.
-**Parameters:**
-Parameters are identical to [list_sheets_in_folder](#list-sheets---smartsheet_clientfolderfolder). See there.
-**Returns:**
-Returns a SmartoolsObject that contains the following attributes:
-- `sheets:` The list of sheets returned.
-- `sights:` The list of dashboards returned.
-- `reports:` The list of reports returned.
-**Example Usage:**
-This example will retrieve all of the containers in the folder that contain 'London' in the name, then print out their names.
+**Args**
+- folder_id
+	- The ID of the folder you will be retrieving sheets from
+- contains (Optional - default `None`)
+	- A partial match to the names of the sheets that will be retrieved. For example, providing `contains='Project Plan'` will return a list of all the sheets that contain "Project Plan" in their sheet name.
+- exact (Optional - default `False`)
+	- If `contains` is provided and `exact = True`, only sheets with a perfect match to the provided name will be returned, rather than a partial match.
+- **kwargs
+	- You may provide any additional keyword arguments to be passed on when retrieving the folder.
+
+### `list_containers_in_folder`
+The `list_containers_in_folder` method functions similarly to the `list_sheets_in_folder` method, but will instead return a `smartsheet.models.FolderContent` object. This object has attributes separating the lists of `sheets`, `sights`, `reports`, `templates`, and `folders`.
 ```
-folder_id = 4236972823734148
+# Example
 
-containers = smart.Folders.list_containers_in_folder(
-	folder_id,
-	'London'
-)
+# Retrieve all items in the folder that contain "Project A" in the name.
+items = smart.Folders.list_containers_in_folder(folder_id, contains='Project A')
 
-for sheet in containers.sheets:
-	print(sheet.name)
-for sight in containers.sights:
-	print(sight.name)
-for report in containers.reports:
-	print(report.name)
+items.folders  # ["Project A"]
+items.sheets   # ["Project Plan - Project A", "Project A Budget"]
+items.reports  # ["Project A Summary Report"]
 ```
 
-## Check Folder Access | `smartsheet_client.Folders.check_folder_access`
-This method allows you to provide a folder ID and will return a boolean indicating whether you have access to that folder.
-**Parameters:**
-- `folder_id:` The ID of the folder to check access for.
+**Args**
+- folder_id
+	- The ID of the folder you will be retrieving items from
+- contains (Optional - default `None`)
+	- A partial match to the names of the items that will be retrieved. For example, providing `contains='Project Plan'` will return a list of all the items that contain "Project Plan" in their name.
+- exact (Optional - default `False`)
+	- If `contains` is provided and `exact = True`, only items with a perfect match to the provided name will be returned, rather than a partial match.
+- **kwargs
+	- You may provide any additional keyword arguments to be passed on when retrieving the folder.
 
-**Returns:**
-A boolean indicating whether you have access to the folder. True if you have access, False if not.
-**Example Usage:**
-```
-folder_id = 204336744687492
+### `get_access_level`
+The `get_access_level` method makes the smallest request to get a folder possible (don't load subfolders), and returns the access level of the authenticated user to the folder. Because folders cannot be directly shared, and therefore don't have an actual sharing permission, this will return either "SHARED" (an alias of "VIEWER") or "UNSHARED".
 
-can_access = smartsheet_client.Folders.check_folder_access(folder_id)
+**Args**
+- folder_id
+	- The folder to get your access level for.
 
-if can_access:
-	You have access to this folder!
-else:
-	You can't access this folder!
-```
+### `create_sight_in_folder`
+The `create_sight_in_folder` method will create a sight/dashboard at the root of the specified folder. Only the name of the sight/dashboard can be specified.
+
+**Args**
+- folder_id
+	- The ID of the folder where the sight will be created.
+- sight_obj
+	- A `smartsheet.models.Sight` object that will be created. Only the "name" attribute will be used.
+
+### `create_report_in_folder`
+The `create_report_in_folder` method will create a report at the root of the specified folder. Only the name of the report can be specified.
+
+**Args**
+- folder_id
+	- The ID of the folder where the report will be created.
+- report_obj
+	- A `smartsheet.models.Report` object that will be created. Only the "name" attribute will be used.
