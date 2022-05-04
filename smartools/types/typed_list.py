@@ -15,6 +15,7 @@ class TypedListWrapper:
 		return self._store.__getattribute__(val)
 
 	def __getitem__(self, idx):
+		return self._store[idx]
 		try:
 			return self._store[idx]
 		except (IndexError, TypeError):
