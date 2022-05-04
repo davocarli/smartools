@@ -93,7 +93,7 @@ class CellFormat(object):
                 self.__setattr__(self.FORMAT_ORDER[i], val)
 
     def __str__(self):
-        return self.value
+        return str(self.value)
 
     @property
     def font_family(self):

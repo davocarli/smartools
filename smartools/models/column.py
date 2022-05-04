@@ -1,7 +1,7 @@
 from smartsheet.models import Column
 from .cell_format import CellFormat
 
-class SmartoolsCell(Column):
+class SmartoolsColumn(Column):
 
     @property
     def format(self):
