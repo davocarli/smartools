@@ -1,6 +1,6 @@
 from smartsheet.models import Row
-from smartools.types import CellList, ColumnList
-from smartsheet.types import TypedList
+from smartools.types import CellList
+from .cell_format import CellFormat
 
 class SmartoolsRow(Row):
 
@@ -19,3 +19,16 @@ class SmartoolsRow(Row):
             self._cells._store.load(value)
         else:
             self._cells.load(value)
+
+    @property
+    def format(self):
+        return CellFormat(self.format_)
+
+    @format.setter
+    def format(self, value):
+        if isinstance(value, CellFormat):
+            value = str(value)
+        self.format_ = value
+
+    def __setattr__(self, key, value):
+        super(Row, self).__setattr__(key, value)
