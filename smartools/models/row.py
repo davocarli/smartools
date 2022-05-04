@@ -1,5 +1,6 @@
 from smartsheet.models import Row
-from smartools.types import CellList
+from smartools.types import CellList, ColumnList
+from smartsheet.types import TypedList
 
 class SmartoolsRow(Row):
 

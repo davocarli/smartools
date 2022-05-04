@@ -6,6 +6,11 @@ class RowList(TypedListWrapper):
         super().__init__(typed_list)
         self._columns = columns
 
+    def __next__(self):
+        item = super().__next__()
+        item._columns = self._columns
+        return item
+
     def __getitem__(self, idx):
         item = super().__getitem__(idx)
         item._columns = self._columns

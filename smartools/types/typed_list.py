@@ -15,10 +15,14 @@ class TypedListWrapper:
 		return self._store.__getattribute__(val)
 
 	def __iter__(self):
-		return self._store.__iter__()
+		self._current_index = 0
+		return self
 
 	def __next__(self):
-		return self._store.__next__()
+		self._current_index += 1
+		if len(self) <= self._current_index:
+			raise StopIteration
+		return self._store[self._current_index]
 
 	def __getitem__(self, idx):
 		try:
