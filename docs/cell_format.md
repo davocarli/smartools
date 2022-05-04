@@ -111,7 +111,7 @@ cell_format.taskbar_color = "#E7F5E9"
 
 # Available Options
 | NONE        |          |                  |                  |                  |                |          |        |            |                |                |            |            |      |
-| c000000     | BLACK    | x8y1             |                  |                  |                |          |        |            |                |                |            |            |      |
+| c000000     | BLACK    | x8y1             |                  |                  |                |          |        |            |                |                |            |            |      | 
 | cFFFFFF     | WHITE    | x8y5             |                  |                  |                |          |        |            |                |                |            |            |      |
 | TRANSPARENT |          |                  |                  |                  |                |          |        |            |                |                |            |            |      |
 | cFFEBEE     | RED_1    | RED_LIGHT        | x1y1             |                  |                |          |        |            |                |                |            |            |      |

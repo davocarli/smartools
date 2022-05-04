@@ -15,6 +15,13 @@ class TypedListWrapper:
 		return self._store.__getattribute__(val)
 
 	def __getitem__(self, idx):
+		if isinstance(idx, int):
+			if idx < len(self._store):
+				return self._store[idx]
+			elif idx in self._ref:
+				return self._store[self._ref[idx]]
+			else:
+				return self._index_items(idx)
 		if isinstance(idx, str):
 			if idx in self._ref:
 				return self._store[self._ref[idx]]
