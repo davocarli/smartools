@@ -15,23 +15,30 @@ class TypedListWrapper:
 		return self._store.__getattribute__(val)
 
 	def __getitem__(self, idx):
-		if isinstance(idx, int):
-			if idx < len(self._store):
-				return self._store[idx]
-			elif idx in self._ref:
-				return self._store[self._ref[idx]]
-			else:
-				return self._index_items(idx)
-		if isinstance(idx, str):
+		try:
+			return self._store[idx]
+		except (IndexError, TypeError):
 			if idx in self._ref:
 				return self._store[self._ref[idx]]
 			else:
 				return self._index_items(idx)
-		else:
-			try:
-				return self._store[idx]
-			except TypeError:
-				raise TypeError(f'list indices must be integers, slices, or str - not {idx.__class__.__name__}')
+		# if isinstance(idx, int):
+		# 	if idx < len(self._store):
+		# 		return self._store[idx]
+		# 	elif idx in self._ref:
+		# 		return self._store[self._ref[idx]]
+		# 	else:
+		# 		return self._index_items(idx)
+		# if isinstance(idx, str):
+		# 	if idx in self._ref:
+		# 		return self._store[self._ref[idx]]
+		# 	else:
+		# 		return self._index_items(idx)
+		# else:
+		# 	try:
+		# 		return self._store[idx]
+		# 	except TypeError:
+		# 		raise TypeError(f'list indices must be integers, slices, or str - not {idx.__class__.__name__}')
 
 	def serialize(self):
 		return serialize(self._store)
