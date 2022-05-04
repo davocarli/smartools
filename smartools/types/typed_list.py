@@ -19,10 +19,11 @@ class TypedListWrapper:
 		return self
 
 	def __next__(self):
-		self._current_index += 1
 		if len(self) <= self._current_index:
 			raise StopIteration
-		return self._store[self._current_index]
+		item = self._store[self._current_index]
+		self._current_index += 1
+		return item
 
 	def __getitem__(self, idx):
 		try:
