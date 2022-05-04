@@ -9,6 +9,7 @@ class ColumnList(TypedListWrapper):
         for i in range(self._idx, len(self._store)):
             column = self._store[i]
             self._ref[column.title] = i
+            self._ref[column.id] = i
             if column.primary:
                 self._ref[''] = i
             self._idx += 1
