@@ -14,5 +14,6 @@ class SmartoolsCell(Cell):
         self.format_ = value
 
     def __setattr__(self, key, value):
-        if key != 'format':
-            super(SmartoolsCell, self).__setattr__(key, value)
+        if key == 'format':
+            self.format_ = value
+        super(SmartoolsCell, self).__setattr__(key, value)

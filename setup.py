@@ -2,7 +2,7 @@ from distutils.core import setup
 setup(
   name = 'smartools',
   packages = ['smartools', 'smartools.models', 'smartools.models.enums', 'smartools.operations', 'smartools.types'],
-  version = '1.1.4',
+  version = '0.1.5',
   license='MIT',
   description = 'A wrapper for the smartsheet-python-sdk that monkey-patches in new methods & functionality.',
   author = 'David Carli-Arnold',
