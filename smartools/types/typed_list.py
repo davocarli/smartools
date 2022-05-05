@@ -27,6 +27,10 @@ class TypedListWrapper:
 
 	def __getitem__(self, idx):
 		try:
+			item = self._store[idx]
+			print(type(item))
+			if isinstance(item, (TypedList, list)):
+				return self.__class__(item)
 			return self._store[idx]
 		except (IndexError, TypeError):
 			if idx in self._ref:

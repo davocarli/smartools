@@ -91,4 +91,10 @@ class SmartoolsEnumeratedValue(EnumeratedValue):
             return self._value.value >= other._value.value
         elif isinstance(other, int):
             return self._value.value >= other
-        return super().__ge__(other)            
+        return super().__ge__(other)    
+
+    def __eq__(self, other):
+        if isinstance(other, Enum) or other is None:
+            return self._value == other
+        elif isinstance(other, six.string_types):
+            return self._value == self._EnumeratedValue__enum[other]

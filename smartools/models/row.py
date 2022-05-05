@@ -31,4 +31,5 @@ class SmartoolsRow(Row):
         self.format_ = value
 
     def __setattr__(self, key, value):
-        super(Row, self).__setattr__(key, value)
+        if key != 'format':
+            super(SmartoolsRow, self).__setattr__(key, value)
