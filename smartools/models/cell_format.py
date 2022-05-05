@@ -1,7 +1,8 @@
 import six
+from smartsheet.util import deserialize
+from smartsheet.types import String
 
 from ..types.enumerated_value import SmartoolsEnumeratedValue
-from smartsheet.util import deserialize
 from .enums.formatting import *
 
 class CellFormat(object):
@@ -65,6 +66,8 @@ class CellFormat(object):
         self._level = level
 
         self._value = self.EMPTY_VALUE
+        if isinstance(initial_value, String):
+            initial_value = initial_value.value
         if initial_value:
             self.value = initial_value
 
@@ -82,7 +85,7 @@ class CellFormat(object):
         if isinstance(value, dict):
             deserialize(self, value)
         else:
-            if isinstance(value, six.string_types):
+            if isinstance(value, (six.string_types, str)):
                 value = value.split(',')
             for i in range(len(value)):
                 val = None
