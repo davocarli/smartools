@@ -11,8 +11,8 @@ class TypedListWrapper:
 		self._ref = {}
 		self._idx = 0
 
-	def __getattr__(self, val):
-		return self._store.__getattribute__(val)
+	def __getattr__(self, key):
+		return getattr(self._store, key)
 
 	def __iter__(self):
 		self._current_index = 0
