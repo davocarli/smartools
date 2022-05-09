@@ -3,7 +3,7 @@ from smartsheet.util import deserialize
 from smartsheet.types import String
 
 from ..types.enumerated_value import SmartoolsEnumeratedValue
-from .enums.formatting import *
+from .enums.format import *
 
 class CellFormat(object):
 
@@ -26,7 +26,6 @@ class CellFormat(object):
         'text_wrap',
         'date_format',
     ]
-    EMPTY_VALUE = ['' for _ in range(17)]
     FONT_SIZES = {
         8: 'EIGHT',
         9: 'NINE',
@@ -65,14 +64,41 @@ class CellFormat(object):
 
         self._level = level
 
-        self._value = self.EMPTY_VALUE
+        self._value = ['' for _ in range(17)]
         if isinstance(initial_value, String):
             initial_value = initial_value.value
+        elif isinstance(initial_value, CellFormat):
+            initial_value = initial_value.to_list()
         if initial_value:
             self.value = initial_value
 
     def serialize(self):
         return self.value
+
+    def summarize(self):
+        result = ''
+        for option in self.FORMAT_ORDER:
+            result += f'{option}: {getattr(self, option)}\n'
+        result += str(self.value)
+        return result
+
+    # Used to "fully apply" currency formatting as would occur when currency in-app
+    def apply_currency(self, currency=None):
+        self.decimal_count = "TWO"
+        self.number_format = "CURRENCY"
+        self.thousands_separator = "ON"
+        if currency is not None:
+            self.currency = currency
+
+    # Used to "fully apply" percentage formatting as would occur when applying in-app
+    def apply_percent(self, decimal_count=None):
+        self.thousands_separator = "ON"
+        self.number_format = "PERCENT"
+        if decimal_count is not None:
+            self.decimal_count = decimal_count
+
+    def to_list(self):
+        return self._value
 
     @property
     def value(self):
@@ -93,7 +119,7 @@ class CellFormat(object):
                     val = int(value[i])
                 except ValueError:
                     pass
-                self.__setattr__(self.FORMAT_ORDER[i], val)
+                self.__setattr__(self._value[i], val)
 
     def __str__(self):
         return str(self.value)

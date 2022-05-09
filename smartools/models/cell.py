@@ -2,29 +2,30 @@ from smartsheet.models import Cell
 from .cell_format import CellFormat
 
 class SmartoolsCell(Cell):
-    # # @property
-    # # def format_(self):
-    # #     print('getting format')
-    # #     return CellFormat(self._format_)
 
-    # # @format_.setter
-    # # def format_(self, value):
-    # #     print('setting format')
-    # #     if isinstance(value, CellFormat):
-    # #         value = str(value)
-    # #     self._format_ = value
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self._format_ = CellFormat(self._format_)
 
-    def __getattr__(self, key):
-        if key in ('format', 'format_'):
-            return CellFormat(self._format_)
-        else:
-            raise AttributeError(key)
+    @property
+    def format_(self):
+        return self._format_
 
-    def __setattr__(self, key, value):
-        if key == 'format':
-            self._format_ = str(value)
-        else:
-            super(Cell, self).__setattr__(key, value)
+    @format_.setter
+    def format_(self, value):
+        self._format_ = CellFormat(value)
+
+    # def __getattr__(self, key):
+    #     if key in ('format', 'format_'):
+    #         return CellFormat(self._format_)
+    #     else:
+    #         raise AttributeError(key)
+
+    # def __setattr__(self, key, value):
+    #     if key == 'format':
+    #         self._format_ = str(value)
+    #     else:
+    #         super(Cell, self).__setattr__(key, value)
 
     # # def __getattr__(self, key):
     # #     print('getting ' + key)

@@ -7,3 +7,4 @@ from .content import FolderContent, WorkspaceContent
 from .cell_format import CellFormat
 from .cell import SmartoolsCell
 from .column import SmartoolsColumn
+from .summary_field import SmartoolsSummaryField
