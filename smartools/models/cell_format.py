@@ -119,7 +119,7 @@ class CellFormat(object):
                     val = int(value[i])
                 except ValueError:
                     pass
-                self.__setattr__(self._value[i], val)
+                self.__setattr__(self.FORMAT_ORDER[i], val)
 
     def __str__(self):
         return str(self.value)
