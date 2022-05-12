@@ -46,3 +46,10 @@ class TypedListWrapper:
 
 	def __len__(self):
 		return self._store.__len__()
+
+	def __contains__(self, key):
+		try:
+			self.__getitem__(key)
+			return True
+		except KeyError:
+			return False
