@@ -6,9 +6,9 @@ smartools is a wrapper around the official [smartsheet-python-sdk]. It monkey pa
 The decision was made to monkey patch the smartsheet sdk rather than fork it because by extending the existing package, this package can be updated independently of the original sdk and sis not dependent on a specific version.
 
 ## Installation
-The package is being submitted to PyPI soon (when docs are complete), and can currently be installed using:
+The package is available to install from [PyPi](https://pypi.org/project/smartools/) using:
 ```
-pip install git+https://github.com/davocarli/smartools.git
+pip install smartools
 ```
 Once installed it can be imported with `import smartools` or can more "authentically" replace the official sdk by using `import smartools as smartsheet`
 
