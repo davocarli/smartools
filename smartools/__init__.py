@@ -54,3 +54,4 @@ from .smartools import Smartools as Smartsheet
 
 # Additional variables
 __eu_base__ = 'https://api.smartsheet.eu/2.0'
+__us_base__ = smartsheet.__api_base__
