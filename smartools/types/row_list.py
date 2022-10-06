@@ -24,6 +24,6 @@ class RowList(TypedListWrapper):
             self._ref[row.id] = i
             if primary_value not in self._ref:
                 self._ref[primary_value] = i
-            if primary_value == idx:
+            if primary_value == idx or idx == row.id:
                 return row
         raise KeyError(idx)
