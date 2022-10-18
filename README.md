@@ -29,6 +29,14 @@ sheet.access_level > 'EDITOR'      # True
 sheet.access_level != 'UNSHARED'   # True - This is a new "permission level" exclusive to smartools
 ```
 
+### Easily Retrieve Child Rows
+Rows now allow you to get their child rows by accessing row.children.
+```
+sheet = smartsheet_client.Sheets.get_sheet(sheet_id)
+
+sheet.rows[0].children  # Will return a list of child rows
+```
+
 ### Indexing sheets/reports
 Some of the greatest improvements to smartools are in the indexing of lists. Rows, Columns, and Cells can now be indexed using strings, as explained below.
 

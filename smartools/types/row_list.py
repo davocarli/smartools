@@ -2,9 +2,10 @@ from .typed_list import TypedListWrapper
 
 class RowList(TypedListWrapper):
 
-    def __init__(self, typed_list, columns=None):
+    def __init__(self, typed_list, columns=None, parent_list=None):
         super().__init__(typed_list)
         self._columns = columns
+        self._parent_list = parent_list
 
     def __next__(self):
         item = super().__next__()
@@ -15,22 +16,23 @@ class RowList(TypedListWrapper):
     def __getitem__(self, idx):
         item = super().__getitem__(idx)
         item._columns = self._columns
-        item._list = self
+        item._list = self if self._parent_list is None else self._parent_list
         return item
 
     def __get_children__(self, row_id):
+        if self._parent_list is not None:
+            return self._parent_list.__get_children__(row_id)
         if row_id not in self._ref:
             self._index_items(row_id)
         result = []
-        counter = self._ref[row_id] + 1
+        counter = self._ref[row_id]
         current_row = self._store[counter]
-        while current_row.parent_id is not None and counter < len(self._store):
+        while counter < len(self._store) - 1 or current_row.id == row_id:
+            counter +=1
+            current_row = self._store[counter]
             if current_row.parent_id == row_id:
                 result.append(current_row)
-            counter += 1
-            if counter < len(self._store):
-                current_row = self._store[counter]
-        return RowList(result)
+        return RowList(result, self._columns, self._parent_list if self._parent_list is not None else self)
 
     def _index_items(self, idx):
         primary_idx = self._columns[''].index
