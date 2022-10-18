@@ -31,7 +31,9 @@ class SmartoolsRow(Row):
 
     @property
     def children(self):
-        return self._list.__get_children__(self.id)
+        if hasattr(self, '_list') is not None:
+            return self._list.__get_children__(self.id)
+        return None
         
     # def __getattr__(self, key):
     #     if key == 'format':
