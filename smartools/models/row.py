@@ -28,6 +28,10 @@ class SmartoolsRow(Row):
             self._cells._store.load(value)
         else:
             self._cells.load(value)
+
+    @property
+    def children(self):
+        return self._list.__get_children__(self.id)
         
     # def __getattr__(self, key):
     #     if key == 'format':
