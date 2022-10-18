@@ -21,14 +21,16 @@ class RowList(TypedListWrapper):
     def __get_children__(self, row_id):
         if row_id not in self._ref:
             self._index_items(row_id)
-        result = RowList()
+        result = []
         counter = self._ref[row_id] + 1
         current_row = self._store[counter]
-        while current_row.parent_id == row_id:
-            result.append(current_row)
+        while current_row.parent_id is not None and counter < len(self._store):
+            if current_row.parent_id == row_id:
+                result.append(current_row)
             counter += 1
-            current_row = self._store[counter]
-        return result
+            if counter < len(self._store):
+                current_row = self._store[counter]
+        return RowList(result)
 
     def _index_items(self, idx):
         primary_idx = self._columns[''].index

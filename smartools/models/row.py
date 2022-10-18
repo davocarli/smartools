@@ -29,8 +29,12 @@ class SmartoolsRow(Row):
         else:
             self._cells.load(value)
 
-    @property
-    def children(self):
+    def __getattr__(self, key):
+        if key == 'children':
+            return self._get_children()
+        return super().__getattr__(key)
+
+    def _get_children(self):
         if hasattr(self, '_list') is not None:
             return self._list.__get_children__(self.id)
         return None
