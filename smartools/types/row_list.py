@@ -9,6 +9,7 @@ class RowList(TypedListWrapper):
     def __next__(self):
         item = super().__next__()
         item._columns = self._columns
+        item._list = self
         return item
 
     def __getitem__(self, idx):
