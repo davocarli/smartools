@@ -25,13 +25,13 @@ class RowList(TypedListWrapper):
         if row_id not in self._ref:
             self._index_items(row_id)
         result = []
-        counter = self._ref[row_id]
-        current_row = self._store[counter]
-        while counter < len(self._store) - 1 or current_row.id == row_id:
-            counter +=1
+        counter = self._ref[row_id] + 1
+        current_row = None
+        while counter < len(self._store):
             current_row = self._store[counter]
             if current_row.parent_id == row_id:
                 result.append(current_row)
+            counter +=1
         return RowList(result, self._columns, self._parent_list if self._parent_list is not None else self)
 
     def _index_items(self, idx):
