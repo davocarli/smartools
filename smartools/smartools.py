@@ -8,7 +8,7 @@ from smartsheet.smartsheet import OperationErrorResult
 class Smartools(smartsheet.Smartsheet):
 
     def smartools(self):
-        print('Smartools v1.0.0')
+        return True
 
     def __getattr__(self, name):
         """

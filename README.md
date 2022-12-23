@@ -107,6 +107,7 @@ Several new methods have been added to the various classes within the smartsheet
 ### [Sheets](./docs/sheets.md)
 - `Sheets.bulk_add_rows`
 - `Sheets.bulk_update_rows`
+- `Sheets.bulk_delete_rows`
 - `Sheets.get_access_level`
 
 ### [Reports](./docs/reports.md)

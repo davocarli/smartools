@@ -9,7 +9,7 @@ def read_file(filename):
 setup(
   name = 'smartools',
   packages = ['smartools', 'smartools.models', 'smartools.models.enums', 'smartools.operations', 'smartools.types'],
-  version = '1.1.0',
+  version = '1.2.0',
   license='MIT',
   description = 'A wrapper for the smartsheet-python-sdk that monkey-patches in new methods & functionality.',
   long_description=read_file('README.md'),

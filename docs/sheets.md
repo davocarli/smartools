@@ -16,6 +16,21 @@ The `bulk_add_rows` & `bulk_update_rows` methods function just like the `add_row
 - sleep (optional - default 60)
 	- The number of seconds to wait if a rate limit error is encountered.
 
+### `bulk_delete_rows`
+The `bulk_delete_rows` method is similar in functioning to the `bulk_add_rows` and `bulk_update_rows` methods, but works with a list of row IDs to delete the rows.
+
+**Args**
+- sheet_id
+	- ID of the sheet to delete rows from
+- ids
+	- List of row ids to be deleted
+- n (optional - default 375)
+	- The number of rows to be deleted in each request
+- retries (optional - default 5)
+	- The number of times to retry a failed request before throwing an Exception
+- sleep (optional - default 60)
+	- The number of seconds to wait if a rate limit error is encountered.
+
 ### `get_access_level`
 The `get_access_level` method makes the smallest request to get a sheet possible (include no columns or rows), and returns the access level of the authenticated user to the sheet. If the sheet cannot be retrieved, it will return an 'UNSHARED' access level.
 
