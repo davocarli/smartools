@@ -8,6 +8,7 @@ class CellList(TypedListWrapper):
 
     def _index_items(self, idx):
         if self._columns is not None:
-            index = self._columns[idx].index
+            self._columns[idx]
+            index = self._columns._ref[idx]
             return self._store[index]
         return super()._index_items(idx)

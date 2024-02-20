@@ -51,7 +51,7 @@ sheet.columns[3].title      # Column4
 ```
 
 #### Rows
-Indexing rows can be done utilizing the primary column value. Indexing with integers is still possible.
+Indexing rows can be done utilizing the primary column value or by using a tuple to specify the column that should be searched. Indexing with integers is still possible.
 
 NOTE: If multiple rows have the same primary column value, the **first** row with this value will be returned. If indexing with an empty string `''` the first row with no primary column value will be returned.
 ```
