@@ -42,6 +42,30 @@ class Smartools(smartsheet.Smartsheet):
         """
         self._impersonate = user_string
 
+    def callback(self, callback):
+        """Set the callback function
+
+        Args:
+            callback (function): Callback function.
+        """
+        self._callback = callback
+
+    def request(self, *args, **kwargs):
+        """
+        Make a request to the API.
+
+        Args:
+            *args: Variable length argument list.
+            **kwargs: Arbitrary keyword arguments.
+
+        Returns:
+            OperationResult: Result of the operation.
+        """
+        result = super().request(*args, **kwargs)
+        if self._callback is not None:
+            self._callback(result)
+        return result
+
     def __getattr__(self, name):
         """
         Handle sub-class instantiation.
