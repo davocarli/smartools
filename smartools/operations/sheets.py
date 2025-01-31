@@ -77,6 +77,40 @@ class SmartoolsSheets(Sheets):
 		result.status = 'SUCCESS'
 		return result
 
+	def bulk_add_rows_with_children(
+		self,
+		sheet_id: int,
+		rows: "SmartoolsRow | Iterable[SmartoolsRow]",
+		**kwargs
+	) -> BulkOperationResult:
+		"""Adds rows in bulk, including child rows under the "child_rows" parameter.
+
+		This method will add a list of rows to a sheet. If any rows contain a "child_rows"
+		parameter, those rows will also be added as children of the parent row. This method
+		automatically handles pagination, retries, and as many levels of hierarchy as needed.
+
+		Args:
+			sheet_id (int): The ID of the sheet to add the rows to.
+			rows (SmartoolsRow | Iterable[SmartoolsRow]): A list of rows to be added.
+
+		Returns:
+			BulkOperationResult: A Smartools BulkOperationResult.
+		"""
+		added_rows = self.bulk_add_rows(sheet_id, rows, **kwargs)
+		if added_rows.status == 'ERROR':
+			return added_rows
+		for i in range(len(added_rows.rows)):
+			parent_id = added_rows.rows[i].id
+			children = getattr(rows[i], 'child_rows', None)
+			if children is not None and len(children) > 0:
+				for child in children:
+					child.parent_id = parent_id
+				result = self.bulk_add_rows_with_children(sheet_id, children, **kwargs)
+				if result.status == 'ERROR':
+					return result
+				added_rows.rows[i].child_rows = result.rows
+		return added_rows
+
 	def bulk_update_rows(
 		self,
 		sheet_id: int,
