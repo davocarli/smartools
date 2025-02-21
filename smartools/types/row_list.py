@@ -1,7 +1,7 @@
 from .typed_list import TypedListWrapper
 
-class RowList(TypedListWrapper):
 
+class RowList(TypedListWrapper):
     def __init__(self, typed_list, columns=None, parent_list=None):
         super().__init__(typed_list)
         self._columns = columns
@@ -31,17 +31,27 @@ class RowList(TypedListWrapper):
             current_row = self._store[counter]
             if current_row.parent_id == row_id:
                 result.append(current_row)
-            counter +=1
-        return RowList(result, self._columns, self._parent_list if self._parent_list is not None else self)
+            counter += 1
+        return RowList(
+            result,
+            self._columns,
+            self._parent_list if self._parent_list is not None else self,
+        )
 
     def _index_items(self, idx):
-        primary_idx = self._columns[''].index
+        try:
+            primary_idx = self._columns[""].index
+        except KeyError:
+            primary_idx = None
         for i in range(self._idx, len(self._store)):
             row = self._store[i]
-            primary_value = str(row.cells[primary_idx].value or '')
+            if primary_idx is not None:
+                primary_value = str(row.cells[primary_idx].value or "")
             self._ref[row.id] = i
-            if primary_value not in self._ref:
+            if primary_idx is not None and primary_value not in self._ref:
                 self._ref[primary_value] = i
-            if primary_value == idx or idx == row.id:
+            if primary_idx is not None and primary_value == idx:
+                return row
+            elif idx == row.id:
                 return row
         raise KeyError(idx)
