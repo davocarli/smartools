@@ -40,7 +40,9 @@ class RowList(TypedListWrapper):
 
     def _index_items(self, idx):
         try:
-            primary_idx = self._columns[""].index
+            self._columns[""]  # Force indexing primary column
+            primary_idx = self._columns._ref[""]
+            # primary_idx = self._columns[""].index
         except KeyError:
             primary_idx = None
         for i in range(self._idx, len(self._store)):
