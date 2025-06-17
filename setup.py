@@ -17,7 +17,7 @@ setup(
         "smartools.operations",
         "smartools.types",
     ],
-    version="1.3.1",
+    version="1.4.0",
     license="MIT",
     description="A wrapper for the smartsheet-python-sdk that monkey-patches in new methods & functionality.",
     long_description=read_file("README.md"),
