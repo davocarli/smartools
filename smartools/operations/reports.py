@@ -91,6 +91,43 @@ class SmartoolsReports(Reports):
 		
 		return report
 
+	def list_shares(self, report_id, page_size=None, page=None, include_all=None):
+		"""List all shares for a report via the unified sharing API.
+
+		Replaces the deprecated Reports.list_shares endpoint.
+
+		Returns:
+			SmartoolsAssetSharesPaginatedResult: Result with .items and .data.
+		"""
+		return self._base.Sharing.list_asset_shares(
+			asset_type="report",
+			asset_id=report_id,
+			include_all=bool(include_all),
+		)
+
+	def update_share(self, report_id, share_id, share_obj):
+		"""Update a report share via the unified sharing API.
+
+		Replaces the deprecated Reports.update_share endpoint.
+		"""
+		return self._base.Sharing.update_asset_share(
+			share_obj=share_obj,
+			asset_type="report",
+			asset_id=report_id,
+			share_id=share_id,
+		)
+
+	def delete_share(self, report_id, share_id):
+		"""Delete a report share via the unified sharing API.
+
+		Replaces the deprecated Reports.delete_share endpoint.
+		"""
+		return self._base.Sharing.delete_asset_share(
+			asset_type="report",
+			asset_id=report_id,
+			share_id=share_id,
+		)
+
 	def get_access_level(
 		self,
 		report_id,

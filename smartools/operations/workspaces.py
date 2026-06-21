@@ -89,6 +89,59 @@ class SmartoolsWorkspaces(Workspaces):
 			containers.folders.extend(child.folders)
 		return containers
 
+	def list_shares(self, workspace_id, page_size=None, page=None, include_all=None):
+		"""List all shares for a workspace via the unified sharing API.
+
+		Replaces the deprecated Workspaces.list_shares endpoint.
+
+		Returns:
+			SmartoolsAssetSharesPaginatedResult: Result with .items and .data.
+		"""
+		return self._base.Sharing.list_asset_shares(
+			asset_type="workspace",
+			asset_id=workspace_id,
+			include_all=bool(include_all),
+		)
+
+	def share_workspace(self, workspace_id, share_obj, send_email=False):
+		"""Share a workspace via the unified sharing API.
+
+		Replaces the deprecated Workspaces.share_workspace endpoint.
+		Accepts a single Share object (old API signature) or a list.
+
+		Returns:
+			Result: Result with .result[0] containing the created Share.
+		"""
+		return self._base.Sharing.share_asset(
+			share_obj=share_obj,
+			asset_type="workspace",
+			asset_id=workspace_id,
+			send_email=send_email,
+		)
+
+	def update_share(self, workspace_id, share_id, share_obj):
+		"""Update a workspace share via the unified sharing API.
+
+		Replaces the deprecated Workspaces.update_share endpoint.
+		"""
+		return self._base.Sharing.update_asset_share(
+			share_obj=share_obj,
+			asset_type="workspace",
+			asset_id=workspace_id,
+			share_id=share_id,
+		)
+
+	def delete_share(self, workspace_id, share_id):
+		"""Delete a workspace share via the unified sharing API.
+
+		Replaces the deprecated Workspaces.delete_share endpoint.
+		"""
+		return self._base.Sharing.delete_asset_share(
+			asset_type="workspace",
+			asset_id=workspace_id,
+			share_id=share_id,
+		)
+
 	def get_access_level(
 		self,
 		workspace_id,
