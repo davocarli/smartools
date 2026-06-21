@@ -9,3 +9,4 @@ from .cell import SmartoolsCell
 from .column import SmartoolsColumn
 from .summary_field import SmartoolsSummaryField
 from .asset_share_paginated_result import SmartoolsAssetSharesPaginatedResult
+from .share import SmartoolsShare

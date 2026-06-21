@@ -42,6 +42,13 @@ for class_, base in patches:
 		except (ImportError, AttributeError):
 			pass
 
+# SmartoolsShare cannot be patched by the loop above because no other
+# smartsheet.models submodule imports Share (Result uses a dynamic lookup).
+# Patch it explicitly so that Result.result.setter picks up SmartoolsShare.
+from smartools.models.share import SmartoolsShare as _SmartoolsShare
+import smartsheet.models as _sm
+_sm.Share = _SmartoolsShare
+
 # Import Smartsheet and copy all init variables such as __gov_base__ and __api_base__.
 from smartsheet import *
 
