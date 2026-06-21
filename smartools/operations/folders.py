@@ -1,14 +1,64 @@
+from types import SimpleNamespace
+
+from smartsheet import fresh_operation
 from smartsheet.folders import Folders
-from smartsheet.models import ContainerDestination
+from smartsheet.models import ContainerDestination, Folder
 
 from smartools.types import ContainerList
 from smartools.types.enumerated_value import SmartoolsEnumeratedValue
 from smartools.models import FolderContent
 from smartools.models.enums import SmartoolsAccessLevel
+from smartools.operations.workspaces import _get_container_children
 
 from smartsheet.models import Sheet
 
 class SmartoolsFolders(Folders):
+
+	def get_folder(self, folder_id, include=None):
+		"""Get the specified Folder and its contents.
+
+		Replaces the deprecated GET /folders/{id} endpoint.
+		Uses the new /metadata + /children endpoints with token-based pagination.
+
+		Args:
+			folder_id (int): Folder ID.
+			include (list[str]): Optional elements to include.
+
+		Returns:
+			Folder
+		"""
+		_op = fresh_operation("get_folder_metadata")
+		_op["method"] = "GET"
+		_op["path"] = "/folders/" + str(folder_id) + "/metadata"
+		_op["query_params"]["include"] = include
+		prepped = self._base.prepare_request(_op)
+		folder = self._base.request(prepped, "Folder", _op)
+
+		children = _get_container_children(
+			self._base, "/folders/" + str(folder_id) + "/children"
+		)
+		folder.sheets = children.sheets
+		folder.folders = children.folders
+		folder.reports = children.reports
+		folder.sights = children.sights
+		folder.templates = children.templates
+
+		return folder
+
+	def list_folders(self, folder_id, page_size=None, page=None, include_all=None):
+		"""List subfolders within the specified folder.
+
+		Replaces deprecated GET /folders/{id}/folders and the deprecated
+		includeAll parameter. Always returns all subfolders via token-based pagination.
+
+		Returns:
+			SimpleNamespace with .data containing a list of Folder objects.
+		"""
+		children = _get_container_children(
+			self._base, "/folders/" + str(folder_id) + "/children"
+		)
+		folders = [Folder(item, self._base) for item in children.folders]
+		return SimpleNamespace(data=folders)
 
 	def list_sheets_in_folder(
 			self,

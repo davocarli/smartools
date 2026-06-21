@@ -91,6 +91,22 @@ class SmartoolsReports(Reports):
 		
 		return report
 
+	def share_report(self, report_id, share_obj, send_email=False):
+		"""Share a report via the unified sharing API.
+
+		Replaces the deprecated Reports.share_report endpoint.
+		Accepts a single Share object (old API signature) or a list.
+
+		Returns:
+			Result: Result with .result[0] containing the created Share.
+		"""
+		return self._base.Sharing.share_asset(
+			share_obj=share_obj,
+			asset_type="report",
+			asset_id=report_id,
+			send_email=send_email,
+		)
+
 	def list_shares(self, report_id, page_size=None, page=None, include_all=None):
 		"""List all shares for a report via the unified sharing API.
 

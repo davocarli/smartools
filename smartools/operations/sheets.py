@@ -302,6 +302,17 @@ class SmartoolsSheets(Sheets):
             share_id=share_id,
         )
 
+    def get_share(self, sheet_id, share_id):
+        """Get a specific sheet share via the unified sharing API.
+
+        Replaces the deprecated Sheets.get_share endpoint.
+        """
+        return self._base.Sharing.get_asset_share(
+            asset_type="sheet",
+            asset_id=sheet_id,
+            share_id=share_id,
+        )
+
     def get_access_level(
         self,
         sheet_id,

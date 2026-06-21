@@ -1,6 +1,8 @@
+from types import SimpleNamespace
+
 from smartsheet import fresh_operation
 from smartsheet.workspaces import Workspaces
-from smartsheet.models import ContainerDestination
+from smartsheet.models import ContainerDestination, Folder
 from smartsheet.models import Sheet
 
 from smartools.types import ContainerList
@@ -8,14 +10,54 @@ from smartools.types.enumerated_value import SmartoolsEnumeratedValue
 from smartools.models import WorkspaceContent
 from smartools.models.enums import SmartoolsAccessLevel
 
+def _get_container_children(base, path):
+	"""Fetch all children from a /children endpoint, handling token-based pagination."""
+	all_sheets, all_folders, all_reports, all_sights, all_templates = [], [], [], [], []
+	last_key = None
+	while True:
+		_op = fresh_operation("get_children")
+		_op["method"] = "GET"
+		_op["path"] = path
+		if last_key:
+			_op["query_params"]["lastKey"] = last_key
+		prepped = base.prepare_request(_op)
+		page = base.request(prepped, ["ContainerChildren", None], _op)
+		all_sheets.extend(page.sheets)
+		all_folders.extend(page.folders)
+		all_reports.extend(page.reports)
+		all_sights.extend(page.sights)
+		all_templates.extend(page.templates)
+		if not page.next_page_token:
+			break
+		last_key = page.next_page_token
+
+	from smartools.models.container_children import SmartoolsContainerChildren
+	result = object.__new__(SmartoolsContainerChildren)
+	result.sheets, result.folders, result.reports = all_sheets, all_folders, all_reports
+	result.sights, result.templates = all_sights, all_templates
+	result.next_page_token = None
+	return result
+
+
+def _populate_folders(base, folders):
+	"""Recursively fetch and populate contents for each folder in the list."""
+	for folder in (folders or []):
+		folder_data = base.Folders.get_folder(folder.id)
+		folder.sheets = folder_data.sheets
+		folder.folders = folder_data.folders
+		folder.reports = folder_data.reports
+		folder.sights = folder_data.sights
+		folder.templates = folder_data.templates
+		_populate_folders(base, folder.folders)
+
+
 class SmartoolsWorkspaces(Workspaces):
 
 	def get_workspace(self, workspace_id, load_all=False, include=None):
 		"""Get the specified Workspace and its contents.
 
-		Replaces the deprecated loadAll=true query param. When load_all=True,
-		recursively fetches nested folder contents via individual Folders.get_folder
-		calls instead of relying on the deprecated single-request bulk load.
+		Replaces the deprecated GET /workspaces/{id} and loadAll=true param.
+		Uses the new /metadata + /children endpoints with token-based pagination.
 
 		Args:
 			workspace_id (int): Workspace ID.
@@ -25,26 +67,67 @@ class SmartoolsWorkspaces(Workspaces):
 		Returns:
 			Workspace
 		"""
-		_op = fresh_operation("get_workspace")
+		_op = fresh_operation("get_workspace_metadata")
 		_op["method"] = "GET"
-		_op["path"] = "/workspaces/" + str(workspace_id)
+		_op["path"] = "/workspaces/" + str(workspace_id) + "/metadata"
 		_op["query_params"]["include"] = include
 		prepped = self._base.prepare_request(_op)
 		workspace = self._base.request(prepped, "Workspace", _op)
+
+		children = _get_container_children(
+			self._base, "/workspaces/" + str(workspace_id) + "/children"
+		)
+		workspace.sheets = children.sheets
+		workspace.folders = children.folders
+		workspace.reports = children.reports
+		workspace.sights = children.sights
+		workspace.templates = children.templates
+
 		if load_all:
-			self._populate_folders(workspace.folders)
+			_populate_folders(self._base, workspace.folders)
+
 		return workspace
 
-	def _populate_folders(self, folders):
-		"""Recursively fetch and populate contents for each folder in the list."""
-		for folder in (folders or []):
-			folder_data = self._base.Folders.get_folder(folder.id)
-			folder.sheets = folder_data.sheets
-			folder.folders = folder_data.folders
-			folder.reports = folder_data.reports
-			folder.sights = folder_data.sights
-			folder.templates = folder_data.templates
-			self._populate_folders(folder.folders)
+	def list_workspaces(self, page_size=None, page=None, include_all=None):
+		"""List workspaces the authenticated user may access.
+
+		Replaces the deprecated includeAll parameter by iterating pages
+		automatically when include_all=True.
+
+		Returns:
+			IndexResult (single page) or SimpleNamespace with .data (all pages).
+		"""
+		if not include_all:
+			return super().list_workspaces(page_size=page_size, page=page, include_all=None)
+
+		effective_page_size = page_size or 100
+		all_workspaces = []
+		current_page = 1
+		while True:
+			result = super().list_workspaces(
+				page_size=effective_page_size, page=current_page, include_all=None
+			)
+			all_workspaces.extend(result.data)
+			if current_page >= result.total_pages:
+				break
+			current_page += 1
+
+		return SimpleNamespace(data=all_workspaces)
+
+	def list_folders(self, workspace_id, page_size=None, page=None, include_all=None):
+		"""List top-level folders in a workspace.
+
+		Replaces deprecated GET /workspaces/{id}/folders and the deprecated
+		includeAll parameter. Always returns all folders via token-based pagination.
+
+		Returns:
+			SimpleNamespace with .data containing a list of Folder objects.
+		"""
+		children = _get_container_children(
+			self._base, "/workspaces/" + str(workspace_id) + "/children"
+		)
+		folders = [Folder(item, self._base) for item in children.folders]
+		return SimpleNamespace(data=folders)
 
 	def list_sheets_in_workspace(
 		self,
