@@ -1,3 +1,4 @@
+from smartsheet import fresh_operation
 from smartsheet.workspaces import Workspaces
 from smartsheet.models import ContainerDestination
 from smartsheet.models import Sheet
@@ -8,6 +9,42 @@ from smartools.models import WorkspaceContent
 from smartools.models.enums import SmartoolsAccessLevel
 
 class SmartoolsWorkspaces(Workspaces):
+
+	def get_workspace(self, workspace_id, load_all=False, include=None):
+		"""Get the specified Workspace and its contents.
+
+		Replaces the deprecated loadAll=true query param. When load_all=True,
+		recursively fetches nested folder contents via individual Folders.get_folder
+		calls instead of relying on the deprecated single-request bulk load.
+
+		Args:
+			workspace_id (int): Workspace ID.
+			load_all (bool): Load all contents including nested folders.
+			include (list[str]): Optional elements to include (ownerInfo, sheetVersion, source).
+
+		Returns:
+			Workspace
+		"""
+		_op = fresh_operation("get_workspace")
+		_op["method"] = "GET"
+		_op["path"] = "/workspaces/" + str(workspace_id)
+		_op["query_params"]["include"] = include
+		prepped = self._base.prepare_request(_op)
+		workspace = self._base.request(prepped, "Workspace", _op)
+		if load_all:
+			self._populate_folders(workspace.folders)
+		return workspace
+
+	def _populate_folders(self, folders):
+		"""Recursively fetch and populate contents for each folder in the list."""
+		for folder in (folders or []):
+			folder_data = self._base.Folders.get_folder(folder.id)
+			folder.sheets = folder_data.sheets
+			folder.folders = folder_data.folders
+			folder.reports = folder_data.reports
+			folder.sights = folder_data.sights
+			folder.templates = folder_data.templates
+			self._populate_folders(folder.folders)
 
 	def list_sheets_in_workspace(
 		self,
