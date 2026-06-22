@@ -246,6 +246,73 @@ class SmartoolsSheets(Sheets):
         result.status = "SUCCESS"
         return result
 
+    def list_shares(self, sheet_id, page_size=None, page=None, include_all=None,
+                    include_workspace_shares=False, access_api_level=0):
+        """List all shares for a sheet via the unified sharing API.
+
+        Replaces the deprecated Sheets.list_shares endpoint.
+        access_api_level and include_workspace_shares are accepted but ignored
+        (not supported by the new API).
+
+        Returns:
+            SmartoolsAssetSharesPaginatedResult: Result with .items and .data.
+        """
+        return self._base.Sharing.list_asset_shares(
+            asset_type="sheet",
+            asset_id=sheet_id,
+            include_all=bool(include_all),
+        )
+
+    def share_sheet(self, sheet_id, share_obj, send_email=False):
+        """Share a sheet via the unified sharing API.
+
+        Replaces the deprecated Sheets.share_sheet endpoint.
+        Accepts a single Share object (old API signature) or a list.
+
+        Returns:
+            Result: Result with .result[0] containing the created Share.
+        """
+        return self._base.Sharing.share_asset(
+            share_obj=share_obj,
+            asset_type="sheet",
+            asset_id=sheet_id,
+            send_email=send_email,
+        )
+
+    def update_share(self, sheet_id, share_id, share_obj):
+        """Update a sheet share via the unified sharing API.
+
+        Replaces the deprecated Sheets.update_share endpoint.
+        """
+        return self._base.Sharing.update_asset_share(
+            share_obj=share_obj,
+            asset_type="sheet",
+            asset_id=sheet_id,
+            share_id=share_id,
+        )
+
+    def delete_share(self, sheet_id, share_id):
+        """Delete a sheet share via the unified sharing API.
+
+        Replaces the deprecated Sheets.delete_share endpoint.
+        """
+        return self._base.Sharing.delete_asset_share(
+            asset_type="sheet",
+            asset_id=sheet_id,
+            share_id=share_id,
+        )
+
+    def get_share(self, sheet_id, share_id):
+        """Get a specific sheet share via the unified sharing API.
+
+        Replaces the deprecated Sheets.get_share endpoint.
+        """
+        return self._base.Sharing.get_asset_share(
+            asset_type="sheet",
+            asset_id=sheet_id,
+            share_id=share_id,
+        )
+
     def get_access_level(
         self,
         sheet_id,
